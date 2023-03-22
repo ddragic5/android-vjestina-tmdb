@@ -16,7 +16,6 @@ import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import endava.codebase.android.movieapp.mock.MoviesMock.getMovieDetails
 
 private const val DEGREES = 360f
 private const val SWEEP_START = 90f
@@ -57,7 +56,7 @@ fun ProgressBar(movieProgress: Float, modifier: Modifier) {
 
 @Preview(showBackground = true)
 @Composable
-public fun PreviewUserScoreProgressBar() {
+public fun ProgressBarPreview() {
     val score: Float = 2.2F/10
     ProgressBar(score, modifier = Modifier)
 }

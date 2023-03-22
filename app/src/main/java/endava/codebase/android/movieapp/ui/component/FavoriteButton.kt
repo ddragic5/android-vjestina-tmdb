@@ -1,29 +1,44 @@
 package endava.codebase.android.movieapp.ui.component
 
-import androidx.compose.material.Checkbox
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
+import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.runtime.*
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
+import endava.codebase.android.movieapp.R
+import endava.codebase.android.movieapp.ui.theme.*
 
-class `FavoriteButton.kt` {
+
+@Composable
+fun FavoriteButton(
+    modifier: Modifier = Modifier,
+    isFavorite: Boolean,
+    onFavoriteClick: () -> Unit
+) {
+    Image(painter = painterResource(id = if (isFavorite) R.drawable.ic_favorite else R.drawable.ic_not_favorite),
+        contentDescription = null,
+        modifier = modifier
+            .clickable { onFavoriteClick() }
+            .background(Blue.copy(0.6f), CircleShape)
+            .size(30.dp)
+            .padding(5.dp)
+
+    )
+}
+
+@Preview
+@Composable
+public fun FavoriteButtonPreview() {
 
 
-    @Composable
-    fun FavoriteButton() {
-        val isChecked = remember {
-            mutableStateOf(false)
-        }
-        FavoriteButtonPreview(
-            isChecked = isChecked.value,
-            onCheckedChange = { isChecked.value = it}
-        )
-    }
-
-    @Composable
-    public fun FavoriteButtonPreview(isChecked: Boolean, onCheckedChange: (Boolean) -> Unit) {
-        Checkbox(
-            checked = isChecked,
-            onCheckedChange = onCheckedChange
-        )
-    }
+    var isFavorite by remember { mutableStateOf(true) }
+    FavoriteButton(
+        isFavorite = isFavorite,
+        onFavoriteClick = { isFavorite = !isFavorite }
+    )
 }
