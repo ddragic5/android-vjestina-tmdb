@@ -16,6 +16,7 @@ import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import endava.codebase.android.movieapp.ui.theme.Green
 
 private const val DEGREES = 360f
 private const val SWEEP_START = 90f
@@ -29,10 +30,10 @@ fun ProgressBar(movieProgress: Float, modifier: Modifier) {
                 .padding(5.dp)
         ) {
             drawArc(
-                color = Color(100, 340, 100),
+                color = Green,
                 alpha = 0.2f,
-                startAngle = (movieProgress* DEGREES) - SWEEP_START,
-                sweepAngle = (1-movieProgress) * DEGREES,
+                startAngle = (movieProgress * DEGREES) - SWEEP_START,
+                sweepAngle = (1 - movieProgress) * DEGREES,
                 useCenter = false,
                 style = Stroke(width = 6.dp.toPx())
             )
@@ -41,12 +42,13 @@ fun ProgressBar(movieProgress: Float, modifier: Modifier) {
                 startAngle = -SWEEP_START,
                 sweepAngle = movieProgress * DEGREES,
                 useCenter = false,
-                style = Stroke(width = 5.dp.toPx(), cap = StrokeCap.Round,
+                style = Stroke(
+                    width = 5.dp.toPx(), cap = StrokeCap.Round,
                 )
             )
         }
         Text(
-            text = (movieProgress*10).toString(),
+            text = (movieProgress * 10).toString(),
             fontSize = 15.sp,
             color = Color.Black,
             modifier = modifier.align(Alignment.Center)
@@ -57,6 +59,6 @@ fun ProgressBar(movieProgress: Float, modifier: Modifier) {
 @Preview(showBackground = true)
 @Composable
 public fun ProgressBarPreview() {
-    val score: Float = 2.2F/10
+    val score: Float = 2.2F / 10
     ProgressBar(score, modifier = Modifier)
 }

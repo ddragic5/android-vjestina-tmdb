@@ -18,7 +18,7 @@ import endava.codebase.android.movieapp.ui.theme.*
 fun FavoriteButton(
     modifier: Modifier = Modifier,
     isFavorite: Boolean,
-    onFavoriteClick: () -> Unit
+    onFavoriteClick: () -> Unit,
 ) {
     Image(painter = painterResource(id = if (isFavorite) R.drawable.ic_favorite else R.drawable.ic_not_favorite),
         contentDescription = null,

@@ -3,7 +3,7 @@ package endava.codebase.android.movieapp.ui.theme
 import androidx.compose.ui.graphics.Color
 
 val Blue = Color(0xFF0b253f)
-
+val Green = Color(100, 340, 100)
 val Gray100 = Color(0xFFfafafa)
 val Gray200 = Color(0xFFf5f5f5)
 val Gray300 = Color(0xFFf0f0f0)

@@ -21,22 +21,24 @@ class MainActivity : ComponentActivity() {
                 horizontalAlignment = Alignment.Start,
                 verticalArrangement = Arrangement.SpaceAround,
 
-            ) {MovieCategoryLabelPreview()
+                ) {
+                MovieCategoryLabelPreview()
                 Row(
                     Modifier.fillMaxWidth(),
-                    horizontalArrangement = Arrangement.SpaceEvenly) {
+                    horizontalArrangement = Arrangement.SpaceEvenly
+                ) {
 
                     ActorCardPreview()
                     MovieCardPreview()
                 }
-Row(
-    Modifier.fillMaxWidth(),
-    horizontalArrangement = Arrangement.SpaceEvenly,) {
-    CrewItemPreview()
-    FavoriteButtonPreview()
-    ProgressBarPreview()
-}
-
+                Row(
+                    Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.SpaceEvenly,
+                ) {
+                    CrewItemPreview()
+                    FavoriteButtonPreview()
+                    ProgressBarPreview()
+                }
 
 
             }

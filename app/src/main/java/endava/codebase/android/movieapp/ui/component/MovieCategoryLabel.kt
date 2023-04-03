@@ -25,18 +25,19 @@ sealed class MovieCategoryLabelTextViewState {
 data class MovieCategoryLabelViewState(
     val itemId: Int,
     val isSelected: Boolean,
-    val categoryText: MovieCategoryLabelTextViewState
+    val categoryText: MovieCategoryLabelTextViewState,
 )
 
 @Composable
 fun MovieCategoryLabel(
     movieCategoryLabelViewState: MovieCategoryLabelViewState,
     onItemClick: (MovieCategoryLabelViewState) -> Unit,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
 ) {
 
 
-    Column(modifier = modifier.width(IntrinsicSize.Min).clickable { onItemClick(movieCategoryLabelViewState) })
+    Column(modifier = modifier.width(IntrinsicSize.Min)
+        .clickable { onItemClick(movieCategoryLabelViewState) })
 
     {
         Text(
@@ -64,12 +65,9 @@ fun MovieCategoryLabel(
 fun MovieCategoryLabelPreview() {
     var isSelected by remember { mutableStateOf(false) }
 
-    MovieCategoryLabel(
-        movieCategoryLabelViewState = MovieCategoryLabelViewState(
-            itemId = 0,
-            isSelected = isSelected,
-            categoryText = MovieCategoryLabelTextViewState.Text(text = "TMDB")
-        ),
-        onItemClick = { isSelected = true }
-    )
+    MovieCategoryLabel(movieCategoryLabelViewState = MovieCategoryLabelViewState(
+        itemId = 0,
+        isSelected = isSelected,
+        categoryText = MovieCategoryLabelTextViewState.Text(text = "TMDB")
+    ), onItemClick = { isSelected = true })
 }
