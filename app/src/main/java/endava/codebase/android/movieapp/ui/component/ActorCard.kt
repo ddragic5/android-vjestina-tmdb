@@ -19,6 +19,8 @@ import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
 import endava.codebase.android.movieapp.mock.MoviesMock
 import endava.codebase.android.movieapp.ui.theme.Shapes
+import endava.codebase.android.movieapp.ui.theme.Spacing
+import endava.codebase.android.movieapp.ui.theme.Typography
 import endava.codebase.android.movieapp.ui.theme.spacing
 
 
@@ -35,8 +37,8 @@ fun ActorCard(
     ) {
     Card(
         modifier = modifier,
-        shape = Shapes.medium,
-        elevation = 5.dp
+        shape = RoundedCornerShape(MaterialTheme.spacing.medium),
+        elevation = MaterialTheme.spacing.extraSmall
     ) {
         Column {
             AsyncImage(
@@ -46,20 +48,27 @@ fun ActorCard(
                 contentScale = ContentScale.Crop
             )
 
-            Column() {
-                Text(
-                    text = actorCardViewState.name,
-                    modifier = Modifier.padding(start = 15.dp, end = 45.dp, top = 6.dp),
-                    fontSize = 15.sp,
-                    color = androidx.compose.ui.graphics.Color.Black
-                )
-                Text(
-                    text = actorCardViewState.character,
-                    modifier = Modifier.padding(start = 15.dp, end = 45.dp, top = 6.dp),
-                    fontSize = 10.sp,
-                    color = Color.Gray
-                )
-            }
+            Text(
+                text = actorCardViewState.name,
+                modifier = Modifier.padding(
+                    start = MaterialTheme.spacing.medium,
+                    end = MaterialTheme.spacing.large,
+                    top = MaterialTheme.spacing.small
+                ),
+                fontSize = Typography.body1.fontSize,
+                color = androidx.compose.ui.graphics.Color.Black
+            )
+            Text(
+                text = actorCardViewState.character,
+                modifier = Modifier.padding(
+                    start = MaterialTheme.spacing.medium,
+                    end = MaterialTheme.spacing.large,
+                    top = MaterialTheme.spacing.small
+                ),
+                fontSize = Typography.body1.fontSize,
+                color = Color.Gray
+            )
+
         }
     }
 }

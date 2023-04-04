@@ -34,11 +34,9 @@ fun MovieCategoryLabel(
     onItemClick: (MovieCategoryLabelViewState) -> Unit,
     modifier: Modifier = Modifier,
 ) {
-
-
     Column(modifier = modifier.width(IntrinsicSize.Min)
-        .clickable { onItemClick(movieCategoryLabelViewState) })
-
+        .clickable { onItemClick(movieCategoryLabelViewState) }
+    )
     {
         Text(
             text = when (movieCategoryLabelViewState.categoryText) {
@@ -71,3 +69,4 @@ fun MovieCategoryLabelPreview() {
         categoryText = MovieCategoryLabelTextViewState.Text(text = "TMDB")
     ), onItemClick = { isSelected = true })
 }
+

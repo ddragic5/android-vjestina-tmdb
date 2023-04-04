@@ -19,6 +19,7 @@ data class MovieCardViewState(
     val imageUrl: String?,
     val isFavorite: Boolean,
     val title: String,
+    val id: Int,
 )
 
 @Composable
@@ -60,7 +61,8 @@ fun MovieCardPreview() {
     val movieCardViewState = MovieCardViewState(
         imageUrl = movie.imageUrl,
         isFavorite = onFavoriteButtonClicked,
-        title = movie.title
+        title = movie.title,
+        id = movie.id,
     )
     val movieCardModifier = Modifier
 
