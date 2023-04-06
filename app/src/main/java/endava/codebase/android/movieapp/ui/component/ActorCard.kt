@@ -5,9 +5,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Card
-import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -19,12 +17,11 @@ import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
 import endava.codebase.android.movieapp.mock.MoviesMock
 import endava.codebase.android.movieapp.ui.theme.Shapes
-import endava.codebase.android.movieapp.ui.theme.spacing
 
 
 data class ActorCardViewState(
     val imageUrl: String?, val name: String,
-    val character: String,
+    val character: String, val id: Int?
 )
 
 @Composable
@@ -46,20 +43,20 @@ fun ActorCard(
                 contentScale = ContentScale.Crop
             )
 
-            Column() {
-                Text(
-                    text = actorCardViewState.name,
-                    modifier = Modifier.padding(start = 15.dp, end = 45.dp, top = 6.dp),
-                    fontSize = 15.sp,
-                    color = androidx.compose.ui.graphics.Color.Black
-                )
-                Text(
-                    text = actorCardViewState.character,
-                    modifier = Modifier.padding(start = 15.dp, end = 45.dp, top = 6.dp),
-                    fontSize = 10.sp,
-                    color = Color.Gray
-                )
-            }
+
+            Text(
+                text = actorCardViewState.name,
+                modifier = Modifier.padding(start = 15.dp, end = 45.dp, top = 6.dp),
+                fontSize = 15.sp,
+                color = androidx.compose.ui.graphics.Color.Black
+            )
+            Text(
+                text = actorCardViewState.character,
+                modifier = Modifier.padding(start = 15.dp, end = 45.dp, top = 6.dp),
+                fontSize = 10.sp,
+                color = Color.Gray
+            )
+
         }
     }
 }
@@ -69,7 +66,7 @@ fun ActorCard(
 public fun ActorCardPreview() {
     val actor = MoviesMock.getActor()
     val actorCardViewState = ActorCardViewState(
-        name = actor.name, imageUrl = actor.imageUrl, character = actor.character
+        name = actor.name, imageUrl = actor.imageUrl, character = actor.character, id = actor.id
     )  //For testing purposes
 
     val actorCardModifier = Modifier

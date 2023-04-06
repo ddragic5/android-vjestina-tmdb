@@ -5,47 +5,28 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 
 import androidx.compose.foundation.layout.*
+import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.tooling.preview.Preview
 import endava.codebase.android.movieapp.ui.component.*
+import endava.codebase.android.movieapp.ui.theme.MovieAppTheme
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
-
         super.onCreate(savedInstanceState)
-
         setContent {
-            Column(
-
-                modifier = Modifier.fillMaxSize(),
-                horizontalAlignment = Alignment.Start,
-                verticalArrangement = Arrangement.SpaceAround,
-
-                ) {
-                MovieCategoryLabelPreview()
-                Row(
-                    Modifier.fillMaxWidth(),
-                    horizontalArrangement = Arrangement.SpaceEvenly
-                ) {
-
-                    ActorCardPreview()
-                    MovieCardPreview()
-                }
-                Row(
-                    Modifier.fillMaxWidth(),
-                    horizontalArrangement = Arrangement.SpaceEvenly,
-                ) {
-                    CrewItemPreview()
-                    FavoriteButtonPreview()
-                    ProgressBarPreview()
-                }
-
-
+            MovieAppTheme {
+                MainScreen()
             }
         }
     }
 }
 
-
-
-
+@Preview(showBackground = true)
+@Composable
+fun DefaultPreview() {
+    MovieAppTheme {
+        MainScreen()
+    }
+}

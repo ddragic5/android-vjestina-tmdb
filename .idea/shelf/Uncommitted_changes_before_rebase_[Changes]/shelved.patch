@@ -1,0 +1,605 @@
+Index: app/src/main/java/endava/codebase/android/movieapp/ui/component/MovieCard.kt
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package endava.codebase.android.movieapp.ui.component\r\n\r\n\r\nimport endava.codebase.android.movieapp.mock.MoviesMock\r\nimport androidx.compose.foundation.layout.*\r\nimport androidx.compose.foundation.shape.RoundedCornerShape\r\nimport androidx.compose.material.Card\r\nimport androidx.compose.material.MaterialTheme\r\nimport androidx.compose.runtime.*\r\nimport androidx.compose.ui.Modifier\r\nimport androidx.compose.ui.layout.ContentScale\r\nimport androidx.compose.ui.tooling.preview.Preview\r\nimport androidx.compose.ui.unit.dp\r\nimport coil.compose.AsyncImage\r\nimport endava.codebase.android.movieapp.ui.theme.Shapes\r\n\r\n\r\ndata class MovieCardViewState(\r\n    val imageUrl: String?,\r\n    val isFavorite: Boolean,\r\n    val title: String,\r\n)\r\n\r\n@Composable\r\nfun MovieCard(\r\n    modifier: Modifier = Modifier,\r\n    movieCardViewState: MovieCardViewState,\r\n    onFavoriteButtonClicked: () -> Unit,\r\n\r\n    ) {\r\n\r\n\r\n    Card(\r\n        modifier = modifier,\r\n        shape = Shapes.medium,\r\n        elevation = 5.dp\r\n    ) {\r\n        Box {\r\n            AsyncImage(\r\n                model = movieCardViewState.imageUrl,\r\n                contentDescription = movieCardViewState.title,\r\n                contentScale = ContentScale.Crop\r\n            )\r\n            FavoriteButton(\r\n                modifier = Modifier\r\n                    .padding(5.dp),\r\n                isFavorite = movieCardViewState.isFavorite,\r\n                onFavoriteClick = onFavoriteButtonClicked\r\n            )\r\n        }\r\n    }\r\n}\r\n\r\n@Preview(showBackground = true)\r\n@Composable\r\nfun MovieCardPreview() {\r\n\r\n    var onFavoriteButtonClicked by remember { mutableStateOf(true) }\r\n    val movie = MoviesMock.getMoviesList()[1]\r\n    val movieCardViewState = MovieCardViewState(\r\n        imageUrl = movie.imageUrl,\r\n        isFavorite = onFavoriteButtonClicked,\r\n        title = movie.title\r\n    )\r\n    val movieCardModifier = Modifier\r\n\r\n        .width(150.dp)\r\n        .height(260.dp)\r\n\r\n\r\n    MovieCard(\r\n        modifier = movieCardModifier,\r\n        movieCardViewState = movieCardViewState,\r\n        onFavoriteButtonClicked = { onFavoriteButtonClicked = !onFavoriteButtonClicked })\r\n}\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/app/src/main/java/endava/codebase/android/movieapp/ui/component/MovieCard.kt b/app/src/main/java/endava/codebase/android/movieapp/ui/component/MovieCard.kt
+--- a/app/src/main/java/endava/codebase/android/movieapp/ui/component/MovieCard.kt	(revision 8cd8a04e068feb7a0294f74aa0bf58da206beb37)
++++ b/app/src/main/java/endava/codebase/android/movieapp/ui/component/MovieCard.kt	(date 1680523332198)
+@@ -19,6 +19,7 @@
+     val imageUrl: String?,
+     val isFavorite: Boolean,
+     val title: String,
++    val id: Int,
+ )
+ 
+ @Composable
+@@ -60,7 +61,8 @@
+     val movieCardViewState = MovieCardViewState(
+         imageUrl = movie.imageUrl,
+         isFavorite = onFavoriteButtonClicked,
+-        title = movie.title
++        title = movie.title,
++        id = movie.id,
+     )
+     val movieCardModifier = Modifier
+ 
+Index: app/src/main/java/endava/codebase/android/movieapp/ui/component/FavoriteButton.kt
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package endava.codebase.android.movieapp.ui.component\r\n\r\nimport androidx.compose.foundation.Image\r\nimport androidx.compose.foundation.background\r\nimport androidx.compose.foundation.clickable\r\nimport androidx.compose.foundation.layout.*\r\nimport androidx.compose.foundation.shape.CircleShape\r\nimport androidx.compose.runtime.*\r\nimport androidx.compose.ui.Modifier\r\nimport androidx.compose.ui.res.painterResource\r\nimport androidx.compose.ui.tooling.preview.Preview\r\nimport androidx.compose.ui.unit.dp\r\nimport endava.codebase.android.movieapp.R\r\nimport endava.codebase.android.movieapp.ui.theme.*\r\n\r\n\r\n@Composable\r\nfun FavoriteButton(\r\n    modifier: Modifier = Modifier,\r\n    isFavorite: Boolean,\r\n    onFavoriteClick: () -> Unit,\r\n) {\r\n    Image(painter = painterResource(id = if (isFavorite) R.drawable.ic_favorite else R.drawable.ic_not_favorite),\r\n        contentDescription = null,\r\n        modifier = modifier\r\n            .clickable { onFavoriteClick() }\r\n            .background(Blue.copy(0.6f), CircleShape)\r\n            .size(30.dp)\r\n            .padding(5.dp)\r\n\r\n    )\r\n}\r\n\r\n@Preview\r\n@Composable\r\npublic fun FavoriteButtonPreview() {\r\n\r\n\r\n    var isFavorite by remember { mutableStateOf(true) }\r\n    FavoriteButton(\r\n        isFavorite = isFavorite,\r\n        onFavoriteClick = { isFavorite = !isFavorite }\r\n    )\r\n}
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/app/src/main/java/endava/codebase/android/movieapp/ui/component/FavoriteButton.kt b/app/src/main/java/endava/codebase/android/movieapp/ui/component/FavoriteButton.kt
+--- a/app/src/main/java/endava/codebase/android/movieapp/ui/component/FavoriteButton.kt	(revision 8cd8a04e068feb7a0294f74aa0bf58da206beb37)
++++ b/app/src/main/java/endava/codebase/android/movieapp/ui/component/FavoriteButton.kt	(date 1680603159852)
+@@ -5,6 +5,7 @@
+ import androidx.compose.foundation.clickable
+ import androidx.compose.foundation.layout.*
+ import androidx.compose.foundation.shape.CircleShape
++import androidx.compose.material.Icon
+ import androidx.compose.runtime.*
+ import androidx.compose.ui.Modifier
+ import androidx.compose.ui.res.painterResource
+@@ -16,16 +17,17 @@
+ 
+ @Composable
+ fun FavoriteButton(
+-    modifier: Modifier = Modifier,
++    modifier: Modifier = Modifier
++        .size(30.dp),
+     isFavorite: Boolean,
+     onFavoriteClick: () -> Unit,
+ ) {
+-    Image(painter = painterResource(id = if (isFavorite) R.drawable.ic_favorite else R.drawable.ic_not_favorite),
++
++    Icon(painter = painterResource(id = if (isFavorite) R.drawable.ic_favorite else R.drawable.ic_not_favorite),
+         contentDescription = null,
+         modifier = modifier
+             .clickable { onFavoriteClick() }
+             .background(Blue.copy(0.6f), CircleShape)
+-            .size(30.dp)
+             .padding(5.dp)
+ 
+     )
+@@ -41,4 +43,4 @@
+         isFavorite = isFavorite,
+         onFavoriteClick = { isFavorite = !isFavorite }
+     )
+-}
+\ No newline at end of file
++}
+Index: app/src/main/java/endava/codebase/android/movieapp/ui/component/ActorCard.kt
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package endava.codebase.android.movieapp.ui.component\r\n\r\n\r\nimport androidx.compose.foundation.layout.Column\r\nimport androidx.compose.foundation.layout.height\r\nimport androidx.compose.foundation.layout.padding\r\nimport androidx.compose.foundation.layout.width\r\nimport androidx.compose.foundation.shape.RoundedCornerShape\r\nimport androidx.compose.material.Card\r\nimport androidx.compose.material.MaterialTheme\r\nimport androidx.compose.material.Text\r\nimport androidx.compose.runtime.Composable\r\nimport androidx.compose.ui.Modifier\r\nimport androidx.compose.ui.graphics.Color\r\nimport androidx.compose.ui.layout.ContentScale\r\nimport androidx.compose.ui.tooling.preview.Preview\r\nimport androidx.compose.ui.unit.dp\r\nimport androidx.compose.ui.unit.sp\r\nimport coil.compose.AsyncImage\r\nimport endava.codebase.android.movieapp.mock.MoviesMock\r\nimport endava.codebase.android.movieapp.ui.theme.Shapes\r\nimport endava.codebase.android.movieapp.ui.theme.spacing\r\n\r\n\r\ndata class ActorCardViewState(\r\n    val imageUrl: String?, val name: String,\r\n    val character: String,\r\n)\r\n\r\n@Composable\r\nfun ActorCard(\r\n    actorCardViewState: ActorCardViewState,\r\n    modifier: Modifier = Modifier,\r\n\r\n    ) {\r\n    Card(\r\n        modifier = modifier,\r\n        shape = Shapes.medium,\r\n        elevation = 5.dp\r\n    ) {\r\n        Column {\r\n            AsyncImage(\r\n                model = actorCardViewState.imageUrl,\r\n                contentDescription = actorCardViewState.name,\r\n                modifier = Modifier.weight(1F),\r\n                contentScale = ContentScale.Crop\r\n            )\r\n\r\n            Column() {\r\n                Text(\r\n                    text = actorCardViewState.name,\r\n                    modifier = Modifier.padding(start = 15.dp, end = 45.dp, top = 6.dp),\r\n                    fontSize = 15.sp,\r\n                    color = androidx.compose.ui.graphics.Color.Black\r\n                )\r\n                Text(\r\n                    text = actorCardViewState.character,\r\n                    modifier = Modifier.padding(start = 15.dp, end = 45.dp, top = 6.dp),\r\n                    fontSize = 10.sp,\r\n                    color = Color.Gray\r\n                )\r\n            }\r\n        }\r\n    }\r\n}\r\n\r\n@Preview\r\n@Composable\r\npublic fun ActorCardPreview() {\r\n    val actor = MoviesMock.getActor()\r\n    val actorCardViewState = ActorCardViewState(\r\n        name = actor.name, imageUrl = actor.imageUrl, character = actor.character\r\n    )  //For testing purposes\r\n\r\n    val actorCardModifier = Modifier\r\n        .height(250.dp)\r\n        .width(150.dp)\r\n\r\n    ActorCard(actorCardViewState = actorCardViewState, modifier = actorCardModifier)\r\n}\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/app/src/main/java/endava/codebase/android/movieapp/ui/component/ActorCard.kt b/app/src/main/java/endava/codebase/android/movieapp/ui/component/ActorCard.kt
+--- a/app/src/main/java/endava/codebase/android/movieapp/ui/component/ActorCard.kt	(revision 8cd8a04e068feb7a0294f74aa0bf58da206beb37)
++++ b/app/src/main/java/endava/codebase/android/movieapp/ui/component/ActorCard.kt	(date 1680604262900)
+@@ -46,20 +46,20 @@
+                 contentScale = ContentScale.Crop
+             )
+ 
+-            Column() {
+-                Text(
+-                    text = actorCardViewState.name,
+-                    modifier = Modifier.padding(start = 15.dp, end = 45.dp, top = 6.dp),
+-                    fontSize = 15.sp,
+-                    color = androidx.compose.ui.graphics.Color.Black
+-                )
+-                Text(
+-                    text = actorCardViewState.character,
+-                    modifier = Modifier.padding(start = 15.dp, end = 45.dp, top = 6.dp),
+-                    fontSize = 10.sp,
+-                    color = Color.Gray
+-                )
+-            }
++
++            Text(
++                text = actorCardViewState.name,
++                modifier = Modifier.padding(start = 15.dp, end = 45.dp, top = 6.dp),
++                fontSize = 15.sp,
++                color = androidx.compose.ui.graphics.Color.Black
++            )
++            Text(
++                text = actorCardViewState.character,
++                modifier = Modifier.padding(start = 15.dp, end = 45.dp, top = 6.dp),
++                fontSize = 10.sp,
++                color = Color.Gray
++            )
++
+         }
+     }
+ }
+Index: app/src/main/java/endava/codebase/android/movieapp/ui/favorites/mapper/FavoritesMapperImpl.kt
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/app/src/main/java/endava/codebase/android/movieapp/ui/favorites/mapper/FavoritesMapperImpl.kt b/app/src/main/java/endava/codebase/android/movieapp/ui/favorites/mapper/FavoritesMapperImpl.kt
+new file mode 100644
+--- /dev/null	(date 1680523846647)
++++ b/app/src/main/java/endava/codebase/android/movieapp/ui/favorites/mapper/FavoritesMapperImpl.kt	(date 1680523846647)
+@@ -0,0 +1,18 @@
++package endava.codebase.android.movieapp.ui.favorites.mapper
++
++import endava.codebase.android.movieapp.model.Movie
++import endava.codebase.android.movieapp.ui.component.MovieCardViewState
++import endava.codebase.android.movieapp.ui.favorites.FavoritesViewState
++
++class FavoritesMapperImpl : FavoritesMapper {
++    override fun toFavoriteState(favoriteMovies: List<Movie>): FavoritesViewState {
++        return FavoritesViewState(favoriteMovies.map { movie ->
++            MovieCardViewState(
++                id = movie.id,
++                imageUrl = movie.imageUrl,
++                isFavorite = movie.isFavorite,
++            title = movie.title)
++
++        })
++    }
++}
+Index: app/src/main/java/endava/codebase/android/movieapp/ui/favorites/mapper/FavoritesMapper.kt
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/app/src/main/java/endava/codebase/android/movieapp/ui/favorites/mapper/FavoritesMapper.kt b/app/src/main/java/endava/codebase/android/movieapp/ui/favorites/mapper/FavoritesMapper.kt
+new file mode 100644
+--- /dev/null	(date 1680521481215)
++++ b/app/src/main/java/endava/codebase/android/movieapp/ui/favorites/mapper/FavoritesMapper.kt	(date 1680521481215)
+@@ -0,0 +1,8 @@
++package endava.codebase.android.movieapp.ui.favorites.mapper
++
++import endava.codebase.android.movieapp.model.Movie
++import endava.codebase.android.movieapp.ui.favorites.FavoritesViewState
++
++interface FavoritesMapper {
++    fun toFavoriteState(favoriteMovies: List<Movie>): FavoritesViewState
++}
+Index: app/src/main/java/endava/codebase/android/movieapp/ui/favorites/FavoritesViewState.kt
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/app/src/main/java/endava/codebase/android/movieapp/ui/favorites/FavoritesViewState.kt b/app/src/main/java/endava/codebase/android/movieapp/ui/favorites/FavoritesViewState.kt
+new file mode 100644
+--- /dev/null	(date 1680523132753)
++++ b/app/src/main/java/endava/codebase/android/movieapp/ui/favorites/FavoritesViewState.kt	(date 1680523132753)
+@@ -0,0 +1,7 @@
++package endava.codebase.android.movieapp.ui.favorites
++
++import endava.codebase.android.movieapp.ui.component.MovieCardViewState
++
++data class FavoritesViewState (
++    val favoriteMovies: List<MovieCardViewState> )
++
+Index: .idea/codeStyles/Project.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/.idea/codeStyles/Project.xml b/.idea/codeStyles/Project.xml
+new file mode 100644
+--- /dev/null	(date 1680519276081)
++++ b/.idea/codeStyles/Project.xml	(date 1680519276081)
+@@ -0,0 +1,117 @@
++<component name="ProjectCodeStyleConfiguration">
++  <code_scheme name="Project" version="173">
++    <codeStyleSettings language="XML">
++      <option name="FORCE_REARRANGE_MODE" value="1" />
++      <indentOptions>
++        <option name="CONTINUATION_INDENT_SIZE" value="4" />
++      </indentOptions>
++      <arrangement>
++        <rules>
++          <section>
++            <rule>
++              <match>
++                <AND>
++                  <NAME>xmlns:android</NAME>
++                  <XML_ATTRIBUTE />
++                  <XML_NAMESPACE>^$</XML_NAMESPACE>
++                </AND>
++              </match>
++            </rule>
++          </section>
++          <section>
++            <rule>
++              <match>
++                <AND>
++                  <NAME>xmlns:.*</NAME>
++                  <XML_ATTRIBUTE />
++                  <XML_NAMESPACE>^$</XML_NAMESPACE>
++                </AND>
++              </match>
++              <order>BY_NAME</order>
++            </rule>
++          </section>
++          <section>
++            <rule>
++              <match>
++                <AND>
++                  <NAME>.*:id</NAME>
++                  <XML_ATTRIBUTE />
++                  <XML_NAMESPACE>http://schemas.android.com/apk/res/android</XML_NAMESPACE>
++                </AND>
++              </match>
++            </rule>
++          </section>
++          <section>
++            <rule>
++              <match>
++                <AND>
++                  <NAME>.*:name</NAME>
++                  <XML_ATTRIBUTE />
++                  <XML_NAMESPACE>http://schemas.android.com/apk/res/android</XML_NAMESPACE>
++                </AND>
++              </match>
++            </rule>
++          </section>
++          <section>
++            <rule>
++              <match>
++                <AND>
++                  <NAME>name</NAME>
++                  <XML_ATTRIBUTE />
++                  <XML_NAMESPACE>^$</XML_NAMESPACE>
++                </AND>
++              </match>
++            </rule>
++          </section>
++          <section>
++            <rule>
++              <match>
++                <AND>
++                  <NAME>style</NAME>
++                  <XML_ATTRIBUTE />
++                  <XML_NAMESPACE>^$</XML_NAMESPACE>
++                </AND>
++              </match>
++            </rule>
++          </section>
++          <section>
++            <rule>
++              <match>
++                <AND>
++                  <NAME>.*</NAME>
++                  <XML_ATTRIBUTE />
++                  <XML_NAMESPACE>^$</XML_NAMESPACE>
++                </AND>
++              </match>
++              <order>BY_NAME</order>
++            </rule>
++          </section>
++          <section>
++            <rule>
++              <match>
++                <AND>
++                  <NAME>.*</NAME>
++                  <XML_ATTRIBUTE />
++                  <XML_NAMESPACE>http://schemas.android.com/apk/res/android</XML_NAMESPACE>
++                </AND>
++              </match>
++              <order>ANDROID_ATTRIBUTE_ORDER</order>
++            </rule>
++          </section>
++          <section>
++            <rule>
++              <match>
++                <AND>
++                  <NAME>.*</NAME>
++                  <XML_ATTRIBUTE />
++                  <XML_NAMESPACE>.*</XML_NAMESPACE>
++                </AND>
++              </match>
++              <order>BY_NAME</order>
++            </rule>
++          </section>
++        </rules>
++      </arrangement>
++    </codeStyleSettings>
++  </code_scheme>
++</component>
+\ No newline at end of file
+Index: app/src/main/res/drawable/ic_home_filled.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/app/src/main/res/drawable/ic_home_filled.xml b/app/src/main/res/drawable/ic_home_filled.xml
+new file mode 100644
+--- /dev/null	(date 1680520566090)
++++ b/app/src/main/res/drawable/ic_home_filled.xml	(date 1680520566090)
+@@ -0,0 +1,3 @@
++<svg width="16" height="18" viewBox="0 0 16 18" fill="none" xmlns="http://www.w3.org/2000/svg">
++<path d="M8.53009 1.1865L15.5117 7.60958L15.875 7.94385V17.4375H9.6875V11.5313H6.3125V17.4375H0.125V7.97152L0.45452 7.64203L6.87556 1.22096C7.09364 1.00288 7.38756 0.87753 7.6959 0.871109C8.00424 0.864688 8.30312 0.977693 8.53009 1.1865Z" fill="#0B253F"/>
++</svg>
+Index: app/src/main/java/endava/codebase/android/movieapp/ui/component/MovieCategoryLabel.kt
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package endava.codebase.android.movieapp.ui.component\r\n\r\n\r\nimport endava.codebase.android.movieapp.R\r\nimport androidx.annotation.StringRes\r\nimport androidx.compose.foundation.clickable\r\nimport androidx.compose.foundation.layout.*\r\nimport androidx.compose.material.Divider\r\nimport androidx.compose.material.Text\r\nimport androidx.compose.runtime.*\r\nimport androidx.compose.ui.Modifier\r\nimport androidx.compose.ui.graphics.Color\r\nimport androidx.compose.ui.res.stringResource\r\nimport androidx.compose.ui.text.font.FontWeight\r\nimport androidx.compose.ui.tooling.preview.Preview\r\nimport androidx.compose.ui.unit.dp\r\nimport androidx.compose.ui.unit.sp\r\n\r\n\r\nsealed class MovieCategoryLabelTextViewState {\r\n    data class Text(val text: String) : MovieCategoryLabelTextViewState()\r\n    data class TextRes(@StringRes val textRes: Int) : MovieCategoryLabelTextViewState()\r\n}\r\n\r\ndata class MovieCategoryLabelViewState(\r\n    val itemId: Int,\r\n    val isSelected: Boolean,\r\n    val categoryText: MovieCategoryLabelTextViewState,\r\n)\r\n\r\n@Composable\r\nfun MovieCategoryLabel(\r\n    movieCategoryLabelViewState: MovieCategoryLabelViewState,\r\n    onItemClick: (MovieCategoryLabelViewState) -> Unit,\r\n    modifier: Modifier = Modifier,\r\n) {\r\n\r\n\r\n    Column(modifier = modifier.width(IntrinsicSize.Min)\r\n        .clickable { onItemClick(movieCategoryLabelViewState) })\r\n\r\n    {\r\n        Text(\r\n            text = when (movieCategoryLabelViewState.categoryText) {\r\n                is MovieCategoryLabelTextViewState.Text -> movieCategoryLabelViewState.categoryText.text\r\n                is MovieCategoryLabelTextViewState.TextRes -> stringResource(id = movieCategoryLabelViewState.categoryText.textRes)\r\n            },\r\n            fontWeight = if (movieCategoryLabelViewState.isSelected) FontWeight.ExtraBold else FontWeight.Normal,\r\n            color = endava.codebase.android.movieapp.ui.theme.Gray300,\r\n            fontSize = 12.sp\r\n        )\r\n\r\n        if (movieCategoryLabelViewState.isSelected) {\r\n            Divider(\r\n                color = endava.codebase.android.movieapp.ui.theme.Blue,\r\n                thickness = 3.dp,\r\n                modifier = modifier.padding(top = 3.dp)\r\n            )\r\n        }\r\n    }\r\n}\r\n\r\n@Preview(showBackground = true)\r\n@Composable\r\nfun MovieCategoryLabelPreview() {\r\n    var isSelected by remember { mutableStateOf(false) }\r\n\r\n    MovieCategoryLabel(movieCategoryLabelViewState = MovieCategoryLabelViewState(\r\n        itemId = 0,\r\n        isSelected = isSelected,\r\n        categoryText = MovieCategoryLabelTextViewState.Text(text = \"TMDB\")\r\n    ), onItemClick = { isSelected = true })\r\n}
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/app/src/main/java/endava/codebase/android/movieapp/ui/component/MovieCategoryLabel.kt b/app/src/main/java/endava/codebase/android/movieapp/ui/component/MovieCategoryLabel.kt
+--- a/app/src/main/java/endava/codebase/android/movieapp/ui/component/MovieCategoryLabel.kt	(revision 8cd8a04e068feb7a0294f74aa0bf58da206beb37)
++++ b/app/src/main/java/endava/codebase/android/movieapp/ui/component/MovieCategoryLabel.kt	(date 1680602587277)
+@@ -70,4 +70,5 @@
+         isSelected = isSelected,
+         categoryText = MovieCategoryLabelTextViewState.Text(text = "TMDB")
+     ), onItemClick = { isSelected = true })
+-}
+\ No newline at end of file
++}
++
+Index: app/src/main/res/values/strings.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><resources>\r\n    <string name=\"app_name\">MovieApp</string>\r\n</resources>\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/app/src/main/res/values/strings.xml b/app/src/main/res/values/strings.xml
+--- a/app/src/main/res/values/strings.xml	(revision 8cd8a04e068feb7a0294f74aa0bf58da206beb37)
++++ b/app/src/main/res/values/strings.xml	(date 1680521025364)
+@@ -1,3 +1,5 @@
+ <resources>
+     <string name="app_name">MovieApp</string>
++    <string name="home">Home</string>
++    <string name="favorites">Favorites</string>
+ </resources>
+Index: .idea/inspectionProfiles/Project_Default.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><component name=\"InspectionProjectProfileManager\">\r\n  <profile version=\"1.0\">\r\n    <option name=\"myName\" value=\"Project Default\" />\r\n    <inspection_tool class=\"PreviewAnnotationInFunctionWithParameters\" enabled=\"true\" level=\"ERROR\" enabled_by_default=\"true\">\r\n      <option name=\"composableFile\" value=\"true\" />\r\n      <option name=\"previewFile\" value=\"true\" />\r\n    </inspection_tool>\r\n    <inspection_tool class=\"PreviewApiLevelMustBeValid\" enabled=\"true\" level=\"ERROR\" enabled_by_default=\"true\">\r\n      <option name=\"composableFile\" value=\"true\" />\r\n      <option name=\"previewFile\" value=\"true\" />\r\n    </inspection_tool>\r\n    <inspection_tool class=\"PreviewDimensionRespectsLimit\" enabled=\"true\" level=\"WARNING\" enabled_by_default=\"true\">\r\n      <option name=\"composableFile\" value=\"true\" />\r\n      <option name=\"previewFile\" value=\"true\" />\r\n    </inspection_tool>\r\n    <inspection_tool class=\"PreviewFontScaleMustBeGreaterThanZero\" enabled=\"true\" level=\"ERROR\" enabled_by_default=\"true\">\r\n      <option name=\"composableFile\" value=\"true\" />\r\n      <option name=\"previewFile\" value=\"true\" />\r\n    </inspection_tool>\r\n    <inspection_tool class=\"PreviewMultipleParameterProviders\" enabled=\"true\" level=\"ERROR\" enabled_by_default=\"true\">\r\n      <option name=\"composableFile\" value=\"true\" />\r\n      <option name=\"previewFile\" value=\"true\" />\r\n    </inspection_tool>\r\n    <inspection_tool class=\"PreviewMustBeTopLevelFunction\" enabled=\"true\" level=\"ERROR\" enabled_by_default=\"true\">\r\n      <option name=\"composableFile\" value=\"true\" />\r\n      <option name=\"previewFile\" value=\"true\" />\r\n    </inspection_tool>\r\n    <inspection_tool class=\"PreviewNeedsComposableAnnotation\" enabled=\"true\" level=\"ERROR\" enabled_by_default=\"true\">\r\n      <option name=\"composableFile\" value=\"true\" />\r\n      <option name=\"previewFile\" value=\"true\" />\r\n    </inspection_tool>\r\n    <inspection_tool class=\"PreviewNotSupportedInUnitTestFiles\" enabled=\"true\" level=\"ERROR\" enabled_by_default=\"true\">\r\n      <option name=\"composableFile\" value=\"true\" />\r\n      <option name=\"previewFile\" value=\"true\" />\r\n    </inspection_tool>\r\n    <inspection_tool class=\"PreviewPickerAnnotation\" enabled=\"true\" level=\"ERROR\" enabled_by_default=\"true\">\r\n      <option name=\"composableFile\" value=\"true\" />\r\n      <option name=\"previewFile\" value=\"true\" />\r\n    </inspection_tool>\r\n  </profile>\r\n</component>
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/.idea/inspectionProfiles/Project_Default.xml b/.idea/inspectionProfiles/Project_Default.xml
+--- a/.idea/inspectionProfiles/Project_Default.xml	(revision 8cd8a04e068feb7a0294f74aa0bf58da206beb37)
++++ b/.idea/inspectionProfiles/Project_Default.xml	(date 1680519276035)
+@@ -1,6 +1,7 @@
+ <component name="InspectionProjectProfileManager">
+   <profile version="1.0">
+     <option name="myName" value="Project Default" />
++    <inspection_tool class="IncorrectFormatting" enabled="true" level="WEAK WARNING" enabled_by_default="true" />
+     <inspection_tool class="PreviewAnnotationInFunctionWithParameters" enabled="true" level="ERROR" enabled_by_default="true">
+       <option name="composableFile" value="true" />
+       <option name="previewFile" value="true" />
+Index: .idea/codeStyles/codeStyleConfig.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/.idea/codeStyles/codeStyleConfig.xml b/.idea/codeStyles/codeStyleConfig.xml
+new file mode 100644
+--- /dev/null	(date 1680519276090)
++++ b/.idea/codeStyles/codeStyleConfig.xml	(date 1680519276090)
+@@ -0,0 +1,5 @@
++<component name="ProjectCodeStyleConfiguration">
++  <state>
++    <option name="PREFERRED_PROJECT_CODE_STYLE" value="Default" />
++  </state>
++</component>
+\ No newline at end of file
+Index: app/src/main/java/endava/codebase/android/movieapp/ui/favorites/FavoritesScreen.kt
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/app/src/main/java/endava/codebase/android/movieapp/ui/favorites/FavoritesScreen.kt b/app/src/main/java/endava/codebase/android/movieapp/ui/favorites/FavoritesScreen.kt
+new file mode 100644
+--- /dev/null	(date 1680523889830)
++++ b/app/src/main/java/endava/codebase/android/movieapp/ui/favorites/FavoritesScreen.kt	(date 1680523889830)
+@@ -0,0 +1,96 @@
++package endava.codebase.android.movieapp.ui.favorites
++
++import endava.codebase.android.movieapp.R
++import androidx.compose.foundation.layout.PaddingValues
++import androidx.compose.foundation.layout.fillMaxWidth
++import androidx.compose.foundation.layout.padding
++import androidx.compose.foundation.lazy.grid.GridCells
++import androidx.compose.foundation.lazy.grid.GridItemSpan
++import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
++import androidx.compose.foundation.lazy.grid.items
++import androidx.compose.material.MaterialTheme
++import androidx.compose.material.Text
++import androidx.compose.runtime.Composable
++import androidx.compose.runtime.getValue
++import androidx.compose.runtime.mutableStateOf
++import androidx.compose.runtime.remember
++import androidx.compose.ui.Modifier
++import androidx.compose.ui.res.stringResource
++import androidx.compose.ui.text.font.FontWeight
++import androidx.compose.ui.tooling.preview.Preview
++import androidx.compose.ui.unit.sp
++import endava.codebase.android.movieapp.mock.MoviesMock.getMoviesList
++import endava.codebase.android.movieapp.ui.component.MovieCard
++import endava.codebase.android.movieapp.ui.component.MovieCardViewState
++import endava.codebase.android.movieapp.ui.favorites.mapper.FavoritesMapper
++import endava.codebase.android.movieapp.ui.favorites.mapper.FavoritesMapperImpl
++import endava.codebase.android.movieapp.ui.theme.MovieAppTheme
++import endava.codebase.android.movieapp.ui.theme.spacing
++
++private val favoritesMapper: FavoritesMapper = FavoritesMapperImpl()
++
++val favoritesViewState = favoritesMapper.toFavoriteState(getMoviesList().filter { it.isFavorite })
++
++@Composable
++fun FavoritesRoute(
++    onNavigateToMovieDetails: (MovieCardViewState) -> Unit
++) {
++    val favoritesViewState by remember { mutableStateOf(favoritesViewState) }
++
++    FavoritesScreen(
++        favoritesViewState = favoritesViewState,
++        onNavigateToMovieDetails = onNavigateToMovieDetails
++    )
++}
++
++
++@Composable
++
++fun FavoritesScreen(
++    modifier: Modifier = Modifier,
++    favoritesViewState: FavoritesViewState,
++    onNavigateToMovieDetails: (MovieCardViewState) -> Unit
++) {
++    LazyVerticalGrid(
++        columns = GridCells.Fixed(3),
++        contentPadding = PaddingValues(horizontal = MaterialTheme.spacing.medium),
++    ) {
++        item(span = { GridItemSpan(maxLineSpan) }) {
++            Text(
++                text = stringResource(R.string.favorites),
++                modifier = Modifier
++                    .fillMaxWidth()
++                    .padding(top = MaterialTheme.spacing.medium),
++                fontSize = 20.sp,
++                fontWeight = FontWeight.SemiBold,
++            )
++        }
++        items(
++            items = favoritesViewState.favoriteMovies,
++            key = { movie -> movie.id }
++        ) { movie ->
++            MovieCard(
++                movieCardViewState = MovieCardViewState(
++                    id = movie.id,
++                    imageUrl = movie.imageUrl,
++                    isFavorite = movie.isFavorite,
++                    title = movie.title,
++                ),
++                onFavoriteButtonClicked = { onNavigateToMovieDetails(movie) }
++            )
++        }
++    }
++}
++
++@Preview(showBackground = true)
++@Composable
++fun FavouritesScreenPreview() {
++    val favoritesMapper = FavoritesMapperImpl()
++
++    MovieAppTheme {
++        FavoritesScreen(
++            favoritesViewState = favoritesMapper.toFavoriteState(getMoviesList()),
++            onNavigateToMovieDetails = { }
++        )
++    }
++}
+Index: app/src/main/java/endava/codebase/android/movieapp/navigation/MovieAppDestination.kt
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/app/src/main/java/endava/codebase/android/movieapp/navigation/MovieAppDestination.kt b/app/src/main/java/endava/codebase/android/movieapp/navigation/MovieAppDestination.kt
+new file mode 100644
+--- /dev/null	(date 1680604014711)
++++ b/app/src/main/java/endava/codebase/android/movieapp/navigation/MovieAppDestination.kt	(date 1680604014711)
+@@ -0,0 +1,5 @@
++package endava.codebase.android.movieapp.navigation
++
++sealed class MovieAppDestination(
++    open val route: String,
++)
+Index: app/src/main/java/endava/codebase/android/movieapp/navigation/MoviesDetailsDestination.kt
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/app/src/main/java/endava/codebase/android/movieapp/navigation/MoviesDetailsDestination.kt b/app/src/main/java/endava/codebase/android/movieapp/navigation/MoviesDetailsDestination.kt
+new file mode 100644
+--- /dev/null	(date 1680604142050)
++++ b/app/src/main/java/endava/codebase/android/movieapp/navigation/MoviesDetailsDestination.kt	(date 1680604142050)
+@@ -0,0 +1,9 @@
++package endava.codebase.android.movieapp.navigation
++
++const val MOVIE_DETAILS_ROUTE = "MovieDetails"
++const val MOVIE_ID_KEY = "movieId"
++const val MOVIE_DETAILS_ROUTE_WITH_PARAMS = "$MOVIE_DETAILS_ROUTE/{$MOVIE_ID_KEY}"
++
++object MovieDetailsDestination : MovieAppDestination(MOVIE_DETAILS_ROUTE_WITH_PARAMS) {
++    fun createNavigationRoute(movieId: Int): String = "$MOVIE_DETAILS_ROUTE/$movieId"
++}
+Index: app/build.gradle
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>plugins {\r\n    id 'com.android.application'\r\n    id 'kotlin-android'\r\n    id 'org.jetbrains.kotlin.plugin.serialization' version \"$kotlin_version\"\r\n    id 'kotlin-kapt'\r\n    id 'org.jlleitschuh.gradle.ktlint' version \"11.0.0\"\r\n    id 'org.jetbrains.kotlin.android'\r\n}\r\n\r\nandroid {\r\n    buildFeatures {\r\n        compose = true\r\n    }\r\n\r\n    composeOptions {\r\n        kotlinCompilerExtensionVersion = \"1.4.3\"\r\n    }\r\n\r\n    kotlinOptions {\r\n        jvmTarget = \"1.8\"\r\n    }\r\n    compileSdk 33\r\n\r\n    defaultConfig {\r\n        applicationId \"endava.codebase.android.movieapp\"\r\n        minSdk 23\r\n        targetSdk 33\r\n        versionCode 1\r\n        versionName \"1.0\"\r\n        testInstrumentationRunner \"androidx.test.runner.AndroidJUnitRunner\"\r\n        vectorDrawables {\r\n            useSupportLibrary true\r\n        }\r\n    }\r\n\r\n    buildTypes {\r\n        release {\r\n            minifyEnabled false\r\n            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'\r\n        }\r\n    }\r\n    compileOptions {\r\n        sourceCompatibility JavaVersion.VERSION_11\r\n        targetCompatibility JavaVersion.VERSION_11\r\n    }\r\n    kotlinOptions {\r\n        jvmTarget = '1.8'\r\n    }\r\n\r\n    composeOptions {\r\n        kotlinCompilerExtensionVersion \"1.4.3\"\r\n    }\r\n    packagingOptions {\r\n        resources {\r\n            excludes += '/META-INF/{AL2.0,LGPL2.1}'\r\n        }\r\n    }\r\n}\r\n\r\ndependencies {\r\n    implementation \"androidx.core:core-ktx:1.9.0\"\r\n    implementation 'androidx.appcompat:appcompat:1.6.1'\r\n    implementation 'androidx.lifecycle:lifecycle-runtime-ktx:2.6.1'\r\n    implementation 'com.google.android.material:material:1.8.0'\r\n    implementation platform('androidx.compose:compose-bom:2023.01.00')\r\n    implementation \"androidx.compose.ui:ui\"\r\n    implementation(\"androidx.compose.material:material:1.4.0\")\r\n    implementation \"androidx.compose.ui:ui-tooling-preview\"\r\n    implementation \"androidx.activity:activity-compose:1.7.0\"\r\n    implementation \"io.coil-kt:coil-compose:2.2.2\"\r\n    debugImplementation \"androidx.compose.ui:ui-test-manifest:\"\r\n    debugImplementation \"androidx.compose.ui:ui-tooling:\"\r\n    testImplementation 'junit:junit:4.13.2'\r\n    androidTestImplementation 'androidx.test.ext:junit:1.1.5'\r\n    androidTestImplementation 'androidx.test.espresso:espresso-core:3.5.1'\r\n    androidTestImplementation \"androidx.compose.ui:ui-test-junit4:1.4.0\"\r\n}\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/app/build.gradle b/app/build.gradle
+--- a/app/build.gradle	(revision 8cd8a04e068feb7a0294f74aa0bf58da206beb37)
++++ b/app/build.gradle	(date 1680603772041)
+@@ -43,13 +43,7 @@
+         sourceCompatibility JavaVersion.VERSION_11
+         targetCompatibility JavaVersion.VERSION_11
+     }
+-    kotlinOptions {
+-        jvmTarget = '1.8'
+-    }
+ 
+-    composeOptions {
+-        kotlinCompilerExtensionVersion "1.4.3"
+-    }
+     packagingOptions {
+         resources {
+             excludes += '/META-INF/{AL2.0,LGPL2.1}'
+Index: app/src/main/res/drawable/ic_home_outlined.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/app/src/main/res/drawable/ic_home_outlined.xml b/app/src/main/res/drawable/ic_home_outlined.xml
+new file mode 100644
+--- /dev/null	(date 1680520546664)
++++ b/app/src/main/res/drawable/ic_home_outlined.xml	(date 1680520546664)
+@@ -0,0 +1,3 @@
++<svg width="16" height="18" viewBox="0 0 16 18" fill="none" xmlns="http://www.w3.org/2000/svg">
++<path d="M15.5117 7.60958L8.53009 1.1865C8.30312 0.977685 8.00424 0.864681 7.6959 0.871101C7.38756 0.877522 7.09364 1.00287 6.87556 1.22095L0.45452 7.64203L0.125 7.97151V17.4375H6.3125V11.5313H9.6875V17.4375H15.875V7.94384L15.5117 7.60958ZM7.72009 1.99586C7.73 1.99586 7.72388 1.99801 7.71963 2.00219C7.71523 1.99801 7.71017 1.99586 7.72009 1.99586ZM14.75 16.3125H10.8125V11.5313C10.8125 11.2329 10.694 10.9467 10.483 10.7358C10.272 10.5248 9.98587 10.4063 9.6875 10.4063H6.3125C6.01413 10.4063 5.72798 10.5248 5.517 10.7358C5.30603 10.9467 5.1875 11.2329 5.1875 11.5313V16.3125H1.25V8.43751L7.72009 2.01643C7.72054 2.01601 7.72058 2.01562 7.72093 2.0152L14.75 8.43751V16.3125Z" fill="#BDBDBD"/>
++</svg>
+Index: app/src/main/java/endava/codebase/android/movieapp/navigation/NavigationItem.kt
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/app/src/main/java/endava/codebase/android/movieapp/navigation/NavigationItem.kt b/app/src/main/java/endava/codebase/android/movieapp/navigation/NavigationItem.kt
+new file mode 100644
+--- /dev/null	(date 1680604177738)
++++ b/app/src/main/java/endava/codebase/android/movieapp/navigation/NavigationItem.kt	(date 1680604177738)
+@@ -0,0 +1,27 @@
++package endava.codebase.android.movieapp.navigation
++
++import endava.codebase.android.movieapp.R
++
++const val HOME_ROUTE = "Home"
++const val FAVORITES_ROUTE = "Favorites"
++
++sealed class NavigationItem(
++    override val route: String,
++    val selectedIconId: Int,
++    val unselectedIconId: Int,
++    val labelId: Int,
++) : MovieAppDestination(route) {
++    object HomeDestination : NavigationItem(
++        route = HOME_ROUTE,
++        selectedIconId = R.drawable.ic_home_filled,
++        unselectedIconId = R.drawable.ic_home_outlined,
++        labelId = R.string.home
++    )
++
++    object FavoritesDestination_ : NavigationItem(
++        route = FAVORITES_ROUTE,
++        selectedIconId = R.drawable.ic_favorite,
++        unselectedIconId = R.drawable.ic_not_favorite,
++        labelId = R.string.favorites
++    )
++}

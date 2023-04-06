@@ -38,6 +38,6 @@ fun CrewItem(
 @Composable
 public fun CrewItemPreview() {
     val crewman = MoviesMock.getCrewman()
-    val crewItemViewState = CrewItemViewState(id = 1, name = "Cristopher Nolan", job = "Producer")
+    val crewItemViewState = CrewItemViewState(id = crewman.id, name = crewman.name, job = crewman.job)
     CrewItem(crewItemViewState = crewItemViewState, modifier = Modifier)
 }

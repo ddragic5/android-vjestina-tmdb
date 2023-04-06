@@ -3,7 +3,6 @@ package endava.codebase.android.movieapp.ui.component
 
 import endava.codebase.android.movieapp.R
 import androidx.annotation.StringRes
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.Divider
 import androidx.compose.material.Text
@@ -18,56 +17,86 @@ import androidx.compose.ui.unit.sp
 
 
 sealed class MovieCategoryLabelTextViewState {
-    data class Text(val text: String) : MovieCategoryLabelTextViewState()
-    data class TextRes(@StringRes val textRes: Int) : MovieCategoryLabelTextViewState()
+    class InputText(val text: String) : MovieCategoryLabelTextViewState()
+    class ResourceText(@StringRes val textRes: Int) : MovieCategoryLabelTextViewState()
 }
 
 data class MovieCategoryLabelViewState(
     val itemId: Int,
     val isSelected: Boolean,
-    val categoryText: MovieCategoryLabelTextViewState,
+    val categoryText: MovieCategoryLabelTextViewState
 )
 
 @Composable
 fun MovieCategoryLabel(
     movieCategoryLabelViewState: MovieCategoryLabelViewState,
-    onItemClick: (MovieCategoryLabelViewState) -> Unit,
-    modifier: Modifier = Modifier,
+    modifier: Modifier,
+    onClick: (Int) -> Unit
 ) {
-
-
-    Column(modifier = modifier.width(IntrinsicSize.Min)
-        .clickable { onItemClick(movieCategoryLabelViewState) })
-
-    {
-        Text(
-            text = when (movieCategoryLabelViewState.categoryText) {
-                is MovieCategoryLabelTextViewState.Text -> movieCategoryLabelViewState.categoryText.text
-                is MovieCategoryLabelTextViewState.TextRes -> stringResource(id = movieCategoryLabelViewState.categoryText.textRes)
-            },
-            fontWeight = if (movieCategoryLabelViewState.isSelected) FontWeight.ExtraBold else FontWeight.Normal,
-            color = endava.codebase.android.movieapp.ui.theme.Gray300,
-            fontSize = 12.sp
+    if (movieCategoryLabelViewState.isSelected) {
+        SelectedText(
+            movieCategoryLabelViewState = movieCategoryLabelViewState,
+            modifier = modifier.width(intrinsicSize = IntrinsicSize.Max)
         )
+    } else {
+        UnselectedText(
+            movieCategoryLabelViewState = movieCategoryLabelViewState,
+            modifier = modifier,
+            onClick=onClick
+        )
+    }
+}
 
-        if (movieCategoryLabelViewState.isSelected) {
-            Divider(
-                color = endava.codebase.android.movieapp.ui.theme.Blue,
-                thickness = 3.dp,
-                modifier = modifier.padding(top = 3.dp)
-            )
-        }
+@Composable
+fun SelectedText(
+    movieCategoryLabelViewState: MovieCategoryLabelViewState,
+    modifier: Modifier
+) {
+    Column(modifier = modifier) {
+        Text(
+            text = SelectTextSource(movieCategoryLabelViewState = movieCategoryLabelViewState),
+            color = Color.Black,
+            fontWeight = FontWeight.Bold,
+            fontSize = 16.sp,
+            modifier = Modifier.fillMaxWidth()
+        )
+        Spacer(modifier = Modifier.size(5.dp))
+        Divider(color = Color.Black, thickness = 4.dp, modifier = Modifier.fillMaxWidth())
+    }
+}
+
+@Composable
+fun UnselectedText(
+    movieCategoryLabelViewState: MovieCategoryLabelViewState,
+    modifier: Modifier,
+    onClick: (Int) -> Unit
+) {
+    Text(
+        text = SelectTextSource(movieCategoryLabelViewState = movieCategoryLabelViewState),
+        color = Color.Gray,
+        fontSize = 16.sp,
+        modifier = modifier
+    )
+}
+
+@Composable
+fun SelectTextSource(movieCategoryLabelViewState: MovieCategoryLabelViewState): String {
+    return when (val categoryText = movieCategoryLabelViewState.categoryText) {
+        is MovieCategoryLabelTextViewState.InputText -> categoryText.text
+        is MovieCategoryLabelTextViewState.ResourceText -> stringResource(id = categoryText.textRes)
     }
 }
 
 @Preview(showBackground = true)
 @Composable
 fun MovieCategoryLabelPreview() {
-    var isSelected by remember { mutableStateOf(false) }
-
-    MovieCategoryLabel(movieCategoryLabelViewState = MovieCategoryLabelViewState(
-        itemId = 0,
-        isSelected = isSelected,
-        categoryText = MovieCategoryLabelTextViewState.Text(text = "TMDB")
-    ), onItemClick = { isSelected = true })
+    val inputText = MovieCategoryLabelTextViewState.InputText("Movies")
+    val stringRes = MovieCategoryLabelTextViewState.ResourceText(R.string.app_name)
+    val categoryViewState1 = MovieCategoryLabelViewState(2, false, inputText)
+    val categoryViewState2 = MovieCategoryLabelViewState(1, true, stringRes)
+    MovieCategoryLabel(
+        movieCategoryLabelViewState = categoryViewState2,
+        modifier = Modifier.padding(5.dp),
+        onClick = {}
+    )
 }
