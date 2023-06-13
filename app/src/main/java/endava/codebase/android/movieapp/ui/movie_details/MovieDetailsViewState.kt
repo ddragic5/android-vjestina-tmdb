@@ -1,7 +1,12 @@
 package endava.codebase.android.movieapp.ui.movie_details
 
 import endava.codebase.android.movieapp.ui.component.ActorCardViewState
-import endava.codebase.android.movieapp.ui.component.CrewItemViewState
+
+data class CrewmanViewState(
+    val id: Int,
+    val name: String,
+    val job: String
+)
 
 data class MovieDetailsViewState(
     val id: Int,
@@ -10,10 +15,6 @@ data class MovieDetailsViewState(
     val title: String,
     val overview: String,
     val isFavorite: Boolean,
-    val crew: List<CrewItemViewState>,
+    val crew: List<CrewmanViewState>,
     val cast: List<ActorCardViewState>,
 )
-
-data class ActorViewState(val actorCardViewState: ActorCardViewState)
-
-data class CrewmanViewState(val crewItemViewState: CrewItemViewState)

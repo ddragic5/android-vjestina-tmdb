@@ -2,29 +2,11 @@ package endava.codebase.android.movieapp.ui.movie_details.mapper
 
 import endava.codebase.android.movieapp.model.MovieDetails
 import endava.codebase.android.movieapp.ui.component.ActorCardViewState
-import endava.codebase.android.movieapp.ui.component.CrewItemViewState
+import endava.codebase.android.movieapp.ui.movie_details.CrewmanViewState
 import endava.codebase.android.movieapp.ui.movie_details.MovieDetailsViewState
 
 class MovieDetailsMapperImpl : MovieDetailsMapper {
     override fun toMovieDetailsViewState(movieDetails: MovieDetails): MovieDetailsViewState {
-
-        val crewList = movieDetails.crew.map {
-            CrewItemViewState(
-                id = it.id,
-                name = it.name,
-                job = it.job
-            )
-        }
-
-        val castList = movieDetails.cast.map {
-            ActorCardViewState(
-                id = it.id,
-                name = it.name,
-                character = it.character,
-                imageUrl = it.imageUrl
-            )
-        }
-
         return MovieDetailsViewState(
             id = movieDetails.movie.id,
             imageUrl = movieDetails.movie.imageUrl,
@@ -32,8 +14,27 @@ class MovieDetailsMapperImpl : MovieDetailsMapper {
             title = movieDetails.movie.title,
             overview = movieDetails.movie.overview,
             isFavorite = movieDetails.movie.isFavorite,
-            crew = crewList,
-            cast = castList
+            crew = toCrewmanViewState(movieDetails),
+            cast = toActorViewState(movieDetails)
         )
     }
+
+    private fun toCrewmanViewState(movieDetails: MovieDetails) =
+        movieDetails.crew.map { crewman ->
+            CrewmanViewState(
+                id = crewman.id,
+                name = crewman.name,
+                job = crewman.job
+            )
+        }
+
+    private fun toActorViewState(movieDetails: MovieDetails) =
+        movieDetails.cast.map { actor ->
+            ActorCardViewState(
+                id = actor.id,
+                name = actor.name,
+                character = actor.character,
+                imageUrl = actor.imageUrl
+            )
+        }
 }

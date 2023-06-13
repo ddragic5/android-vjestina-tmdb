@@ -1,97 +1,306 @@
 package endava.codebase.android.movieapp.ui.movie_details
 
 
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.lazy.LazyColumn
-
 import androidx.compose.foundation.lazy.LazyRow
-import androidx.compose.foundation.lazy.grid.GridCells
-import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
-import androidx.compose.foundation.lazy.grid.items
+import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
-
+import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
-
+import endava.codebase.android.movieapp.R
 import endava.codebase.android.movieapp.mock.MoviesMock
+import endava.codebase.android.movieapp.ui.component.*
 import endava.codebase.android.movieapp.ui.movie_details.mapper.MovieDetailsMapper
 import endava.codebase.android.movieapp.ui.movie_details.mapper.MovieDetailsMapperImpl
 import endava.codebase.android.movieapp.ui.theme.spacing
-import endava.codebase.android.movieapp.R
-import endava.codebase.android.movieapp.ui.component.*
-import endava.codebase.android.movieapp.ui.theme.MovieAppTheme
 
-private val MovieDetailsMapper: MovieDetailsMapper = MovieDetailsMapperImpl()
-
-val movieDetailsViewState = MovieDetailsMapper.toMovieDetailsViewState(MoviesMock.getMovieDetails())
 
 @Composable
-fun MovieDetailsRoute() {
-    val movieDetailsViewState by remember { mutableStateOf(movieDetailsViewState) }
-    MovieDetailsScreen(movieDetailsViewState = movieDetailsViewState)
+fun MovieDetailsRoute(
+    viewModel: MovieDetailsViewModel
+) {
+    val movieDetailsViewState: MovieDetailsViewState by viewModel.movieDetailsViewState.collectAsState()
+
+    MovieDetailsScreen(
+        movieDetailsViewState = movieDetailsViewState,
+        onFavoriteButtonClick = { movieId -> viewModel.toggleFavorite(movieId) }
+    )
 }
 
 @Composable
-fun MovieDetailsScreen(movieDetailsViewState: MovieDetailsViewState) {
-    LazyColumn(modifier = Modifier.background(color = MaterialTheme.colors.background)) {
-        item { MovieImage(movieDetailsViewState) }
+fun MovieDetailsScreen(
+    modifier: Modifier = Modifier,
+    movieDetailsViewState: MovieDetailsViewState,
+    onFavoriteButtonClick: (Int) -> Unit
+) {
+    Column(
+        modifier = modifier
+            .verticalScroll(state = rememberScrollState())
+    ) {
+        MovieDetailsHeader(
+            id = movieDetailsViewState.id,
+            imageUrl = movieDetailsViewState.imageUrl,
+            voteAverage = movieDetailsViewState.voteAverage,
+            title = movieDetailsViewState.title,
+            isFavorite = movieDetailsViewState.isFavorite,
+            onFavoriteButtonClick = onFavoriteButtonClick
+        )
 
-        item { MovieOverview(movieDetailsViewState) }
+        Spacer(
+            modifier = Modifier
+                .height(MaterialTheme.spacing.medium)
+        )
 
-        item { MovieCrewman(movieDetailsViewState) }
+        MovieDetailsOverview(
+            overview = movieDetailsViewState.overview
+        )
 
-        item { MovieCast(movieDetailsViewState) }
+        Spacer(
+            modifier = Modifier
+                .height(MaterialTheme.spacing.medium)
+        )
+
+        MovieDetailsCrew(
+            crew = movieDetailsViewState.crew
+        )
+
+        Spacer(
+            modifier = Modifier
+                .height(MaterialTheme.spacing.medium)
+        )
+
+        MovieDetailsCast(
+            cast = movieDetailsViewState.cast
+        )
+
+        Spacer(
+            modifier = Modifier
+                .height(MaterialTheme.spacing.medium)
+        )
     }
 }
 
 @Composable
-fun MovieCast(movieDetailsViewState: MovieDetailsViewState) {
-    Column {
-        Text(
-            text = "Top Billed Cast",
-            fontSize = 17.sp,
-            fontWeight = FontWeight.Bold,
-            color = MaterialTheme.colors.primary,
+fun MovieDetailsHeader(
+    modifier: Modifier = Modifier
+        .fillMaxWidth(),
+    id: Int,
+    imageUrl: String?,
+    voteAverage: Float,
+    title: String,
+    isFavorite: Boolean,
+    onFavoriteButtonClick: (Int) -> Unit
+) {
+    Box(
+        modifier = modifier,
+    ) {
+        AsyncImage(
+            model = imageUrl,
+            contentDescription = title,
+            contentScale = ContentScale.Crop,
             modifier = Modifier
-                .padding(
-                    horizontal = MaterialTheme.spacing.medium,
-                    vertical = MaterialTheme.spacing.small
-                )
+                .fillMaxWidth()
+                .fillMaxHeight()
+                .align(Alignment.TopCenter)
         )
+
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .align(Alignment.BottomCenter)
+        ) {
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(start = MaterialTheme.spacing.medium),
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                ProgressBar(
+                    score = voteAverage,
+                    modifier = Modifier
+                )
+
+                Text(
+                    text = stringResource(id = R.string.score_bar),
+                    modifier = Modifier
+                        .padding(start = MaterialTheme.spacing.small),
+                    fontSize = 16.sp,
+                    fontWeight = FontWeight.Bold,
+                    color = Color.White
+                )
+            }
+
+            Spacer(
+                modifier = Modifier
+                    .height(MaterialTheme.spacing.medium)
+            )
+
+            Text(
+                modifier = Modifier
+                    .padding(start = MaterialTheme.spacing.medium),
+                text = title,
+                fontSize = 20.sp,
+                fontWeight = FontWeight.Bold,
+                color = Color.White
+            )
+
+            Spacer(
+                modifier = Modifier
+                    .height(MaterialTheme.spacing.medium)
+            )
+
+            FavoriteButton(
+                modifier = Modifier
+                    .padding(
+                        start = MaterialTheme.spacing.medium,
+                        bottom = MaterialTheme.spacing.medium
+                    )
+                    .size(30.dp),
+                isFavorite = isFavorite,
+                onClick = { onFavoriteButtonClick(id) }
+            )
+        }
+    }
+}
+
+@Composable
+fun MovieDetailsOverview(
+    modifier: Modifier = Modifier,
+    overview: String
+) {
+    Column(
+        modifier = modifier
+            .fillMaxWidth()
+            .padding(start = MaterialTheme.spacing.medium, end = MaterialTheme.spacing.medium)
+    ) {
+        MovieDetailsSectionHeader(
+            textId = R.string.overview
+        )
+
+        Spacer(
+            modifier = Modifier
+                .height(MaterialTheme.spacing.small)
+        )
+
+        Text(
+            modifier = Modifier
+                .fillMaxWidth(),
+            text = overview,
+            maxLines = 7,
+            fontSize = 14.sp
+        )
+    }
+}
+
+@Composable
+fun MovieDetailsCrew(
+    modifier: Modifier = Modifier,
+    crew: List<CrewmanViewState>
+) {
+    val initialCrewmanViewState = CrewmanViewState(
+        id = 1,
+        name = "",
+        job = ""
+    )
+
+    Row(
+        modifier = modifier,
+        horizontalArrangement = Arrangement.SpaceAround
+    ) {
+        MovieDetailsCrewColumn(
+            crewman1 = crew.getOrElse(0) { initialCrewmanViewState },
+            crewman2 = crew.getOrElse(1) { initialCrewmanViewState }
+        )
+
+        MovieDetailsCrewColumn(
+            crewman1 = crew.getOrElse(2) { initialCrewmanViewState },
+            crewman2 = crew.getOrElse(3) { initialCrewmanViewState }
+        )
+
+        MovieDetailsCrewColumn(
+            crewman1 = crew.getOrElse(4) { initialCrewmanViewState },
+            crewman2 = crew.getOrElse(5) { initialCrewmanViewState }
+        )
+    }
+}
+
+@Composable
+fun MovieDetailsCrewColumn(
+    crewman1: CrewmanViewState,
+    crewman2: CrewmanViewState
+) {
+    Column(
+        Modifier
+            .padding(start = MaterialTheme.spacing.medium, end = MaterialTheme.spacing.large)
+    ) {
+        CrewItem(
+            crewItemViewState = CrewItemViewState(
+                name = crewman1.name,
+                job = crewman1.job,
+                id = crewman1.id
+            ),
+            modifier = Modifier
+        )
+
+        Spacer(Modifier.height(MaterialTheme.spacing.medium))
+
+        CrewItem(
+            crewItemViewState = CrewItemViewState(
+                name = crewman2.name,
+                job = crewman2.job,
+                id = crewman2.id
+            ),
+            modifier = Modifier
+        )
+    }
+}
+
+@Composable
+fun MovieDetailsCast(
+    modifier: Modifier = Modifier,
+    cast: List<ActorCardViewState>
+) {
+    Column(
+        modifier = modifier
+            .padding(start = MaterialTheme.spacing.medium, end = MaterialTheme.spacing.medium)
+    ) {
+        MovieDetailsSectionHeader(
+            textId = R.string.top_billed_cast
+        )
+
+        Spacer(
+            modifier = Modifier
+                .height(MaterialTheme.spacing.small)
+        )
+
         LazyRow(
             horizontalArrangement = Arrangement.spacedBy(MaterialTheme.spacing.medium),
-            modifier = Modifier
-                .padding(
-                    horizontal = MaterialTheme.spacing.medium,
-                    vertical = MaterialTheme.spacing.small
-                )
+            userScrollEnabled = true
         ) {
-            items(movieDetailsViewState.cast.size) { actor ->
+            items(
+                items = cast,
+                key = { actor -> actor.id!! }
+            ) { actor ->
                 ActorCard(
-                    actorCardViewState = ActorCardViewState(
-                        id = movieDetailsViewState.cast[actor].id,
-                        imageUrl = movieDetailsViewState.cast[actor].imageUrl,
-                        name = movieDetailsViewState.cast[actor].name,
-                        character = movieDetailsViewState.cast[actor].character
-                    ),
+                    actorCardViewState = actor,
                     modifier = Modifier
                         .size(
-                            width = dimensionResource(id = R.dimen.actor_card_width),
-                            height = dimensionResource(id = R.dimen.actor_card_height)
+                            width = 125.dp,
+                            height = 209.dp
                         )
                 )
             }
@@ -100,93 +309,27 @@ fun MovieCast(movieDetailsViewState: MovieDetailsViewState) {
 }
 
 @Composable
-fun MovieCrewman(movieDetailsViewState: MovieDetailsViewState) {
-    LazyVerticalGrid(
-        columns = GridCells.Fixed(3),
-        contentPadding = PaddingValues(dimensionResource(id = R.dimen.medium_spacing)),
-        userScrollEnabled = false,
-        modifier = Modifier.height(dimensionResource(id = R.dimen.crewman_height))
-    ) {
-        items(movieDetailsViewState.crew) { crewman ->
-            CrewItem(
-                crewItemViewState = CrewItemViewState(
-                    id = crewman.id,
-                    name = crewman.name,
-                    job = crewman.job
-                ),
-                modifier = Modifier
-                    .padding(
-                        vertical = dimensionResource(id = R.dimen.medium_spacing),
-                        horizontal = MaterialTheme.spacing.small
-                    )
-            )
-        }
-    }
+fun MovieDetailsSectionHeader(
+    modifier: Modifier = Modifier,
+    textId: Int
+) {
+    Text(
+        modifier = modifier
+            .fillMaxWidth(),
+        text = stringResource(id = textId),
+        maxLines = 1,
+        fontSize = 18.sp,
+        fontWeight = FontWeight.Bold
+    )
 }
 
+@Preview(showBackground = false)
 @Composable
-fun MovieOverview(movieDetailsViewState: MovieDetailsViewState) {
-    Column(modifier = Modifier.padding(horizontal = MaterialTheme.spacing.medium)) {
-        Text(
-            text = stringResource(id = R.string.overview),
-            fontSize = 17.sp,
-            fontWeight = FontWeight.Bold,
-            color = MaterialTheme.colors.primary,
-            modifier = Modifier.padding(vertical = MaterialTheme.spacing.medium)
-        )
-        Text(
-            text = movieDetailsViewState.overview,
-            color = MaterialTheme.colors.onSurface,
-            fontSize = 15.sp,
-        )
-    }
-}
+private fun MovieDetailsScreenPreview() {
+    val movieDetailsMapper: MovieDetailsMapper = MovieDetailsMapperImpl()
 
-@Composable
-fun MovieImage(movieDetailsViewState: MovieDetailsViewState) {
-    Box(contentAlignment = Alignment.BottomStart) {
-        AsyncImage(
-            model = movieDetailsViewState.imageUrl,
-            contentDescription = null,
-            modifier = Modifier
-                .height(dimensionResource(id = R.dimen.movie_image_height))
-                .fillMaxSize(),
-            contentScale = ContentScale.Crop
-        )
-        Column {
-            Row(verticalAlignment = Alignment.CenterVertically) {
-                ProgressBar(
-                    score = movieDetailsViewState.voteAverage,
-                    modifier = Modifier
-                        .padding(horizontal = MaterialTheme.spacing.extraSmall)
-                        .size(dimensionResource(id = R.dimen.userscore_size))
-                )
-                Text(
-                    text = stringResource(id = R.string.overview),
-                    fontSize = 14.sp,
-                    color = MaterialTheme.colors.onPrimary,
-                )
-            }
-            Text(
-                text = movieDetailsViewState.title,
-                fontSize = 20.sp,
-                fontWeight = FontWeight.Bold,
-                color = MaterialTheme.colors.onPrimary,
-                modifier = Modifier.padding(horizontal = MaterialTheme.spacing.small)
-            )
-            FavoriteButton(
-                isFavorite = movieDetailsViewState.isFavorite,
-                onFavoriteClick = { },
-                modifier = Modifier
-                    .size(dimensionResource(id = R.dimen.favorite_button_size))
-                    .padding(MaterialTheme.spacing.small)
-            )
-        }
-    }
-}
-
-@Preview
-@Composable
-fun MovieDetailsScreenPreview() {
-    MovieAppTheme { MovieDetailsScreen(movieDetailsViewState = movieDetailsViewState) }
+    MovieDetailsScreen(
+        movieDetailsViewState = movieDetailsMapper.toMovieDetailsViewState(MoviesMock.getMovieDetails()),
+        onFavoriteButtonClick = { }
+    )
 }
