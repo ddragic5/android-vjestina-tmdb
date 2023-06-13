@@ -38,9 +38,9 @@ object MoviesMock {
         ),
         Movie(
             id = 5,
-            title = "Spider-Man: No Way Home",
-            overview = "Peter Parker is unmasked and no longer able to separate his normal life from the high-stakes of being a super-hero. When he asks for help from Doctor Strange the stakes become even more dangerous, forcing him to discover what it truly means to be Spider-Man.",
-            imageUrl = "https://image.tmdb.org/t/p/w500/1g0dhYtq4irTY1GPXvft6k4YLjm.jpg",
+            title = "Ant Man",
+            overview = "Scott Lang i Hope Van Dyne, zajedno s Hopeinim roditeljima Hankom Pymom i Janet Van Dyne, te njegovom kćeri Cassie Lang, istražuju Kvantno carstvo u kojem komuniciraju s neobičnim stvorenjima i upuštaju se u avanturu koja nadilazi granice onoga što su mislili da je moguće.",
+            imageUrl = "https://www.themoviedb.org/t/p/w600_and_h900_bestv2/slLNg0gmy4PtVR3saE44iEshNJU.jpg",
             isFavorite = false,
         ),
     )
@@ -49,27 +49,27 @@ object MoviesMock {
         movie = Movie(
             id = 5,
             title = "Spider-Man: No Way Home",
-            overview = "Peter Parker is unmasked and no longer able to separate his normal life from the high-stakes of being a super-hero. When he asks for help from Doctor Strange the stakes become even more dangerous, forcing him to discover what it truly means to be Spider-Man.",
-            imageUrl = "https://image.tmdb.org/t/p/w500/1g0dhYtq4irTY1GPXvft6k4YLjm.jpg",
+            overview = "Scott Lang i Hope Van Dyne, zajedno s Hopeinim roditeljima Hankom Pymom i Janet Van Dyne, te njegovom kćeri Cassie Lang, istražuju Kvantno carstvo u kojem komuniciraju s neobičnim stvorenjima i upuštaju se u avanturu koja nadilazi granice onoga što su mislili da je moguće.",
+            imageUrl = "https://www.themoviedb.org/t/p/w600_and_h900_bestv2/slLNg0gmy4PtVR3saE44iEshNJU.jpg",
             isFavorite = false,
         ),
-        voteAverage = 0.81f,
-        releaseDate = "17/12/2021",
+        voteAverage = 0.65f,
+        releaseDate = "02/17/2023",
         language = "US",
-        runtime = 148,
+        runtime = 125,
         crew = List(6) {
             Crewman(
                 id = it,
-                name = "Jon Watts",
+                name = "Peyton Reed",
                 job = "Director",
             )
         },
         cast = List(6) {
             Actor(
                 id = it,
-                name = "Tom Holland",
-                character = "Peter Parker / Spider-Man",
-                imageUrl = "https://image.tmdb.org/t/p/w200/bBRlrpJm9XkNSg0YT5LCaxqoFMX.jpg"
+                name = "Paul Rudd",
+                character = "Scott Lang / Ant Man",
+                imageUrl = "https://www.themoviedb.org/t/p/w600_and_h900_bestv2/slLNg0gmy4PtVR3saE44iEshNJU.jpg"
             )
         },
     )
@@ -85,5 +85,28 @@ object MoviesMock {
         name = "Robert Downey Jr.",
         character = "Tony Stark/Iron Man",
         imageUrl = "https://www.themoviedb.org/t/p/w200/5qHNjhtjMD4YWH3UP0rm4tKwxCL.jpg"
+    )
+
+    fun getMovieDetails(movieId: Int): MovieDetails = MovieDetails(
+        movie = getMoviesList().first { it.id == movieId },
+        voteAverage = 0.65f,
+        releaseDate = "02/17/2023",
+        language = "US",
+        runtime = 125,
+        crew = List(6) {
+            Crewman(
+                id = it,
+                name = "Peyton Reed",
+                job = "Director",
+            )
+        },
+        cast = List(6) {
+            Actor(
+                id = it,
+                name = "Paul Rudd",
+                character = "Scott Lang / Ant-Man",
+                imageUrl = "https://www.themoviedb.org/t/p/w600_and_h900_bestv2/slLNg0gmy4PtVR3saE44iEshNJU.jpg"
+            )
+        }
     )
 }

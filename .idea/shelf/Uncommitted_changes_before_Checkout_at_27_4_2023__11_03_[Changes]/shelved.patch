@@ -1,0 +1,348 @@
+Index: app/src/main/java/endava/codebase/android/movieapp/ui/component/MovieCard.kt
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package endava.codebase.android.movieapp.ui.component\r\n\r\n\r\nimport endava.codebase.android.movieapp.mock.MoviesMock\r\nimport androidx.compose.foundation.layout.*\r\nimport androidx.compose.foundation.shape.RoundedCornerShape\r\nimport androidx.compose.material.Card\r\nimport androidx.compose.material.MaterialTheme\r\nimport androidx.compose.runtime.*\r\nimport androidx.compose.ui.Modifier\r\nimport androidx.compose.ui.layout.ContentScale\r\nimport androidx.compose.ui.tooling.preview.Preview\r\nimport androidx.compose.ui.unit.dp\r\nimport coil.compose.AsyncImage\r\nimport endava.codebase.android.movieapp.ui.theme.Shapes\r\n\r\n\r\ndata class MovieCardViewState(\r\n    val imageUrl: String?,\r\n    val isFavorite: Boolean,\r\n    val title: String,\r\n    val id: Int,\r\n)\r\n\r\n@Composable\r\nfun MovieCard(\r\n    modifier: Modifier = Modifier,\r\n    movieCardViewState: MovieCardViewState,\r\n    onFavoriteButtonClicked: () -> Unit,\r\n\r\n    ) {\r\n\r\n\r\n    Card(\r\n        modifier = modifier,\r\n        shape = Shapes.medium,\r\n        elevation = 5.dp\r\n    ) {\r\n        Box {\r\n            AsyncImage(\r\n                model = movieCardViewState.imageUrl,\r\n                contentDescription = movieCardViewState.title,\r\n                contentScale = ContentScale.Crop\r\n            )\r\n            FavoriteButton(\r\n                modifier = Modifier\r\n                    .padding(5.dp),\r\n                isFavorite = movieCardViewState.isFavorite,\r\n                onFavoriteClick = onFavoriteButtonClicked\r\n            )\r\n        }\r\n    }\r\n}\r\n\r\n@Preview(showBackground = true)\r\n@Composable\r\nfun MovieCardPreview() {\r\n\r\n    var onFavoriteButtonClicked by remember { mutableStateOf(true) }\r\n    val movie = MoviesMock.getMoviesList()[1]\r\n    val movieCardViewState = MovieCardViewState(\r\n        imageUrl = movie.imageUrl,\r\n        isFavorite = onFavoriteButtonClicked,\r\n        title = movie.title,\r\n        id = movie.id,\r\n    )\r\n    val movieCardModifier = Modifier\r\n\r\n        .width(150.dp)\r\n        .height(260.dp)\r\n\r\n\r\n    MovieCard(\r\n        modifier = movieCardModifier,\r\n        movieCardViewState = movieCardViewState,\r\n        onFavoriteButtonClicked = { onFavoriteButtonClicked = !onFavoriteButtonClicked })\r\n}\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/app/src/main/java/endava/codebase/android/movieapp/ui/component/MovieCard.kt b/app/src/main/java/endava/codebase/android/movieapp/ui/component/MovieCard.kt
+--- a/app/src/main/java/endava/codebase/android/movieapp/ui/component/MovieCard.kt	(revision 0e964deff6111b4fe94a7e132e5b914eafadbd42)
++++ b/app/src/main/java/endava/codebase/android/movieapp/ui/component/MovieCard.kt	(date 1682586098855)
+@@ -26,7 +26,7 @@
+ fun MovieCard(
+     modifier: Modifier = Modifier,
+     movieCardViewState: MovieCardViewState,
+-    onFavoriteButtonClicked: () -> Unit,
++    onFavoriteButtonClicked: (Int) -> Unit,
+ 
+     ) {
+ 
+@@ -46,7 +46,7 @@
+                 modifier = Modifier
+                     .padding(5.dp),
+                 isFavorite = movieCardViewState.isFavorite,
+-                onFavoriteClick = onFavoriteButtonClicked
++                onFavoriteClick = { onFavoriteButtonClicked(movieCardViewState.id) }
+             )
+         }
+     }
+Index: app/src/main/java/endava/codebase/android/movieapp/mock/MoviesMock.kt
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package endava.codebase.android.movieapp.mock\r\n\r\nimport endava.codebase.android.movieapp.model.Actor\r\nimport endava.codebase.android.movieapp.model.Crewman\r\nimport endava.codebase.android.movieapp.model.Movie\r\nimport endava.codebase.android.movieapp.model.MovieDetails\r\n\r\nobject MoviesMock {\r\n\r\n    fun getMoviesList(): List<Movie> = listOf(\r\n        Movie(\r\n            id = 1,\r\n            title = \"Venom: Let There Be Carnage\",\r\n            overview = \"After finding a host body in investigative reporter Eddie Brock, the alien symbiote must face a new enemy, Carnage, the alter ego of serial killer Cletus Kasady.\",\r\n            imageUrl = \"https://image.tmdb.org/t/p/w500/rjkmN1dniUHVYAtwuV3Tji7FsDO.jpg\",\r\n            isFavorite = false,\r\n        ),\r\n        Movie(\r\n            id = 2,\r\n            title = \"Iron Man\",\r\n            overview = \"After being held captive in an Afghan cave, billionaire engineer Tony Stark creates a unique weaponized suit of armor to fight evil.\",\r\n            imageUrl = \"https://image.tmdb.org/t/p/w500/78lPtwv72eTNqFW9COBYI0dWDJa.jpg\",\r\n            isFavorite = true,\r\n        ),\r\n        Movie(\r\n            id = 3,\r\n            title = \"Interstellar\",\r\n            overview = \"The adventures of a group of explorers who make use of a newly discovered wormhole to surpass the limitations on human space travel and conquer the vast distances involved in an interstellar voyage.\",\r\n            imageUrl = \"https://image.tmdb.org/t/p/w500/gEU2QniE6E77NI6lCU6MxlNBvIx.jpg\",\r\n            isFavorite = false,\r\n        ),\r\n        Movie(\r\n            id = 4,\r\n            title = \"Inception\",\r\n            overview = \"Cobb, a skilled thief who commits corporate espionage by infiltrating the subconscious of his targets is offered a chance to regain his old life as payment for a task considered to be impossible: \\\"inception\\\", the implantation of another person's idea into a target's subconscious.\",\r\n            imageUrl = \"https://image.tmdb.org/t/p/w500/edv5CZvWj09upOsy2Y6IwDhK8bt.jpg\",\r\n            isFavorite = true,\r\n        ),\r\n        Movie(\r\n            id = 5,\r\n            title = \"Spider-Man: No Way Home\",\r\n            overview = \"Peter Parker is unmasked and no longer able to separate his normal life from the high-stakes of being a super-hero. When he asks for help from Doctor Strange the stakes become even more dangerous, forcing him to discover what it truly means to be Spider-Man.\",\r\n            imageUrl = \"https://image.tmdb.org/t/p/w500/1g0dhYtq4irTY1GPXvft6k4YLjm.jpg\",\r\n            isFavorite = false,\r\n        ),\r\n    )\r\n\r\n    fun getMovieDetails(): MovieDetails = MovieDetails(\r\n        movie = Movie(\r\n            id = 5,\r\n            title = \"Spider-Man: No Way Home\",\r\n            overview = \"Peter Parker is unmasked and no longer able to separate his normal life from the high-stakes of being a super-hero. When he asks for help from Doctor Strange the stakes become even more dangerous, forcing him to discover what it truly means to be Spider-Man.\",\r\n            imageUrl = \"https://image.tmdb.org/t/p/w500/1g0dhYtq4irTY1GPXvft6k4YLjm.jpg\",\r\n            isFavorite = false,\r\n        ),\r\n        voteAverage = 0.81f,\r\n        releaseDate = \"17/12/2021\",\r\n        language = \"US\",\r\n        runtime = 148,\r\n        crew = List(6) {\r\n            Crewman(\r\n                id = it,\r\n                name = \"Jon Watts\",\r\n                job = \"Director\",\r\n            )\r\n        },\r\n        cast = List(6) {\r\n            Actor(\r\n                id = it,\r\n                name = \"Tom Holland\",\r\n                character = \"Peter Parker / Spider-Man\",\r\n                imageUrl = \"https://image.tmdb.org/t/p/w200/bBRlrpJm9XkNSg0YT5LCaxqoFMX.jpg\"\r\n            )\r\n        },\r\n    )\r\n\r\n    fun getCrewman(): Crewman = Crewman(\r\n        id = 1,\r\n        name = \"Jon Favreau\",\r\n        job = \"Director\"\r\n    )\r\n\r\n    fun getActor(): Actor = Actor(\r\n        id = 1,\r\n        name = \"Robert Downey Jr.\",\r\n        character = \"Tony Stark/Iron Man\",\r\n        imageUrl = \"https://www.themoviedb.org/t/p/w200/5qHNjhtjMD4YWH3UP0rm4tKwxCL.jpg\"\r\n    )\r\n}\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/app/src/main/java/endava/codebase/android/movieapp/mock/MoviesMock.kt b/app/src/main/java/endava/codebase/android/movieapp/mock/MoviesMock.kt
+--- a/app/src/main/java/endava/codebase/android/movieapp/mock/MoviesMock.kt	(revision 0e964deff6111b4fe94a7e132e5b914eafadbd42)
++++ b/app/src/main/java/endava/codebase/android/movieapp/mock/MoviesMock.kt	(date 1682586098855)
+@@ -86,4 +86,27 @@
+         character = "Tony Stark/Iron Man",
+         imageUrl = "https://www.themoviedb.org/t/p/w200/5qHNjhtjMD4YWH3UP0rm4tKwxCL.jpg"
+     )
++
++    fun getMovieDetails(movieId: Int): MovieDetails = MovieDetails(
++        movie = getMoviesList().first { it.id == movieId },
++        voteAverage = 0.81f,
++        releaseDate = "17/12/2021",
++        language = "US",
++        runtime = 148,
++        crew = List(6) {
++            Crewman(
++                id = it,
++                name = "Jon Watts",
++                job = "Director",
++            )
++        },
++        cast = List(6) {
++            Actor(
++                id = it,
++                name = "Tom Holland",
++                character = "Peter Parker / Spider-Man",
++                imageUrl = "https://image.tmdb.org/t/p/w200/bBRlrpJm9XkNSg0YT5LCaxqoFMX.jpg"
++            )
++        }
++    )
+ }
+Index: app/src/main/java/endava/codebase/android/movieapp/MovieApp.kt
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package endava.codebase.android.movieapp\r\n\r\nimport android.app.Application\r\nimport android.util.Log\r\n\r\nclass MovieApp : Application() {\r\n    override fun onCreate() {\r\n        super.onCreate()\r\n\r\n        Log.d(\"MovieApp\", \"App started\")\r\n    }\r\n}\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/app/src/main/java/endava/codebase/android/movieapp/MovieApp.kt b/app/src/main/java/endava/codebase/android/movieapp/MovieApp.kt
+--- a/app/src/main/java/endava/codebase/android/movieapp/MovieApp.kt	(revision 0e964deff6111b4fe94a7e132e5b914eafadbd42)
++++ b/app/src/main/java/endava/codebase/android/movieapp/MovieApp.kt	(date 1682586098852)
+@@ -1,12 +1,18 @@
+ package endava.codebase.android.movieapp
+ 
+ import android.app.Application
+-import android.util.Log
++import org.koin.core.context.GlobalContext.startKoin
+ 
+ class MovieApp : Application() {
+     override fun onCreate() {
+         super.onCreate()
+-
+-        Log.d("MovieApp", "App started")
++        startKoin {
++            modules(
++                dataModule,
++                favoritesModule,
++                movieDetailsModule,
++                homeModule
++            )
++        }
+     }
+ }
+Index: app/src/main/java/endava/codebase/android/movieapp/data/dataModule.kt
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/app/src/main/java/endava/codebase/android/movieapp/data/dataModule.kt b/app/src/main/java/endava/codebase/android/movieapp/data/dataModule.kt
+new file mode 100644
+--- /dev/null	(date 1682586098852)
++++ b/app/src/main/java/endava/codebase/android/movieapp/data/dataModule.kt	(date 1682586098852)
+@@ -0,0 +1,8 @@
++package endava.codebase.android.movieapp.data
++
++import kotlinx.coroutines.Dispatchers
++
++val dataModule = module {
++    single<MovieRepository> {
++        FakeMovieRepository(ioDispatcher = Dispatchers.IO)    }
++}
+Index: app/src/main/java/endava/codebase/android/movieapp/data/favoritesModule.kt
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/app/src/main/java/endava/codebase/android/movieapp/data/favoritesModule.kt b/app/src/main/java/endava/codebase/android/movieapp/data/favoritesModule.kt
+new file mode 100644
+--- /dev/null	(date 1682586098853)
++++ b/app/src/main/java/endava/codebase/android/movieapp/data/favoritesModule.kt	(date 1682586098853)
+@@ -0,0 +1,4 @@
++package endava.codebase.android.movieapp.data
++
++class favoritesModule {
++}
+Index: app/src/main/java/endava/codebase/android/movieapp/mock/FakeMovieRepository.kt
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/app/src/main/java/endava/codebase/android/movieapp/mock/FakeMovieRepository.kt b/app/src/main/java/endava/codebase/android/movieapp/mock/FakeMovieRepository.kt
+new file mode 100644
+--- /dev/null	(date 1682586098854)
++++ b/app/src/main/java/endava/codebase/android/movieapp/mock/FakeMovieRepository.kt	(date 1682586098854)
+@@ -0,0 +1,50 @@
++package endava.codebase.android.movieapp.mock
++
++class FakeMovieRepository(
++    private val ioDispatcher: CoroutineDispatcher,
++) : MovieRepository {
++    private val fakeMovies = MoviesMock.getMoviesList().toMutableList()
++
++    private val movies: Flow<List<Movie>> = FavoritesDBMock.favoriteIds
++        .mapLatest { favoriteIds ->
++            fakeMovies.map { it.copy(isFavorite = favoriteIds.contains(it.id)) }
++        }
++        .flowOn(ioDispatcher)
++
++    override fun popularMovies(movieCategory: MovieCategory) = movies
++
++    override fun nowPlayingMovies(movieCategory: MovieCategory) = movies
++
++    override fun upcomingMovies(movieCategory: MovieCategory) = movies
++
++    override fun movieDetails(movieId: Int): Flow<MovieDetails> =
++        FavoritesDBMock.favoriteIds
++            .mapLatest { favoriteIds ->
++                val movieDetails = MoviesMock.getMovieDetails(movieId)
++                movieDetails.copy(
++                    movie = movieDetails.movie.copy(
++                        isFavorite = favoriteIds.contains(movieDetails.movie.id)
++                    )
++                )
++            }
++            .flowOn(ioDispatcher)
++
++    override fun favoriteMovies(): Flow<List<Movie>> = movies.map {
++        it.filter { fakeMovie -> fakeMovie.isFavorite }
++    }
++
++    override suspend fun addMovieToFavorites(movieId: Int) {
++        FavoritesDBMock.insert(movieId)
++    }
++
++    override suspend fun removeMovieFromFavorites(movieId: Int) {
++        FavoritesDBMock.delete(movieId)
++    }
++
++    override suspend fun toggleFavorite(movieId: Int) =
++        if (FavoritesDBMock.favoriteIds.value.contains(movieId)) {
++            removeMovieFromFavorites(movieId)
++        } else {
++            addMovieToFavorites(movieId)
++        }
++}
+Index: app/src/main/java/endava/codebase/android/movieapp/data/homeModule.kt
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/app/src/main/java/endava/codebase/android/movieapp/data/homeModule.kt b/app/src/main/java/endava/codebase/android/movieapp/data/homeModule.kt
+new file mode 100644
+--- /dev/null	(date 1682586098853)
++++ b/app/src/main/java/endava/codebase/android/movieapp/data/homeModule.kt	(date 1682586098853)
+@@ -0,0 +1,4 @@
++package endava.codebase.android.movieapp.data
++
++class homeModule {
++}
+Index: app/src/main/java/endava/codebase/android/movieapp/mock/MovieRepository.kt
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/app/src/main/java/endava/codebase/android/movieapp/mock/MovieRepository.kt b/app/src/main/java/endava/codebase/android/movieapp/mock/MovieRepository.kt
+new file mode 100644
+--- /dev/null	(date 1682586098855)
++++ b/app/src/main/java/endava/codebase/android/movieapp/mock/MovieRepository.kt	(date 1682586098855)
+@@ -0,0 +1,12 @@
++package endava.codebase.android.movieapp.mock
++
++interface MovieRepository {
++    fun popularMovies(movieCategory: MovieCategory): Flow<List<Movie>>
++    fun nowPlayingMovies(movieCategory: MovieCategory): Flow<List<Movie>>
++    fun upcomingMovies(movieCategory: MovieCategory): Flow<List<Movie>>
++    fun movieDetails(movieId: Int): Flow<MovieDetails>
++    fun favoriteMovies(): Flow<List<Movie>>
++    suspend fun addMovieToFavorites(movieId: Int)
++    suspend fun removeMovieFromFavorites(movieId: Int)
++    suspend fun toggleFavorite(movieId: Int)
++}
+Index: app/src/main/java/endava/codebase/android/movieapp/data/movieDetailsModule.kt
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/app/src/main/java/endava/codebase/android/movieapp/data/movieDetailsModule.kt b/app/src/main/java/endava/codebase/android/movieapp/data/movieDetailsModule.kt
+new file mode 100644
+--- /dev/null	(date 1682586098853)
++++ b/app/src/main/java/endava/codebase/android/movieapp/data/movieDetailsModule.kt	(date 1682586098853)
+@@ -0,0 +1,4 @@
++package endava.codebase.android.movieapp.data
++
++class movieDetailsModule {
++}
+Index: app/src/main/java/endava/codebase/android/movieapp/data/repository/FakeMovieRepository.kt
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/app/src/main/java/endava/codebase/android/movieapp/data/repository/FakeMovieRepository.kt b/app/src/main/java/endava/codebase/android/movieapp/data/repository/FakeMovieRepository.kt
+new file mode 100644
+--- /dev/null	(date 1682586098854)
++++ b/app/src/main/java/endava/codebase/android/movieapp/data/repository/FakeMovieRepository.kt	(date 1682586098854)
+@@ -0,0 +1,36 @@
++package endava.codebase.android.movieapp.data.repository
++
++import endava.codebase.android.movieapp.mock.MoviesMock
++import endava.codebase.android.movieapp.model.Movie
++import kotlinx.coroutines.CoroutineDispatcher
++import java.util.concurrent.Flow
++
++class FakeMovieRepository (
++    private val ioDispatcher: CoroutineDispatcher,
++) : MovieRepository {
++    private val fakeMovies= MoviesMock.getMoviesList().toMutableList()
++
++    private val movies: Flow<List<Movie>> = FavoritesDBMock.favoriteIds.mapLatest {
++        favoriteIds -> fakeMovies.map { it.copy(isFavorite = favoriteIds.contains(it.id)) }
++    }
++        .flowOn(ioDispatcher)
++
++    override fun favoriteMovies(): Flow<List<Movie>> = movies.map {
++        it.filter { fakeMovie -> fakeMovie.isFavorite }
++    }
++
++    override suspend fun addMovieToFavorites(movieId: Int) {
++        FavoritesDBMock.insert(movieId)
++    }
++
++    override suspend fun removeMovieFromFavorites(movieId: Int) {
++        FavoritesDBMock.delete(movieId)
++    }
++
++    override suspend fun toggleFavorite(movieId: Int) =
++        if (FavoritesDBMock.favoriteIds.value.contains(movieId)) {
++            removeMovieFromFavorites(movieId)
++        } else {
++            addMovieToFavorites(movieId)
++        }
++}
+Index: app/src/main/java/endava/codebase/android/movieapp/data/repository/MovieRepository.kt
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/app/src/main/java/endava/codebase/android/movieapp/data/repository/MovieRepository.kt b/app/src/main/java/endava/codebase/android/movieapp/data/repository/MovieRepository.kt
+new file mode 100644
+--- /dev/null	(date 1682586098854)
++++ b/app/src/main/java/endava/codebase/android/movieapp/data/repository/MovieRepository.kt	(date 1682586098854)
+@@ -0,0 +1,12 @@
++package endava.codebase.android.movieapp.data.repository
++
++interface MovieRepository {
++    fun popularMovies(movieCategory: MovieCategory): Flow<List<Movie>>
++    fun nowPlayingMovies(movieCategory: MovieCategory): Flow<List<Movie>>
++    fun upcomingMovies(movieCategory: MovieCategory): Flow<List<Movie>>
++    fun movieDetails(movieId: Int): Flow<MovieDetails>
++    fun favoriteMovies(): Flow<List<Movie>>
++    suspend fun addMovieToFavorites(movieId: Int)
++    suspend fun removeMovieFromFavorites(movieId: Int)
++    suspend fun toggleFavorite(movieId: Int)
++}
+Index: app/src/main/java/endava/codebase/android/movieapp/mock/FavoritesDBMock.kt
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/app/src/main/java/endava/codebase/android/movieapp/mock/FavoritesDBMock.kt b/app/src/main/java/endava/codebase/android/movieapp/mock/FavoritesDBMock.kt
+new file mode 100644
+--- /dev/null	(date 1682586098854)
++++ b/app/src/main/java/endava/codebase/android/movieapp/mock/FavoritesDBMock.kt	(date 1682586098854)
+@@ -0,0 +1,13 @@
++package endava.codebase.android.movieapp.mock
++
++import kotlinx.coroutines.flow.MutableStateFlow
++import kotlinx.coroutines.flow.StateFlow
++import kotlinx.coroutines.flow.asStateFlow
++import kotlinx.coroutines.flow.update
++
++object FavoritesDBMock {
++    private val favoritesIdsState = MutableStateFlow(setOf<Int>())
++    val favoriteIds: StateFlow<Set<Int>> = favoritesIdsState.asStateFlow()
++    fun insert(movieId: Int) = favoritesIdsState.update { it + movieId }
++    fun delete(movieId: Int) = favoritesIdsState.update { it - movieId }
++}
+Index: app/build.gradle
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>plugins {\r\n    id 'com.android.application'\r\n    id 'kotlin-android'\r\n    id 'org.jetbrains.kotlin.plugin.serialization' version \"$kotlin_version\"\r\n    id 'kotlin-kapt'\r\n    id 'org.jlleitschuh.gradle.ktlint' version \"11.0.0\"\r\n    id 'org.jetbrains.kotlin.android'\r\n}\r\n\r\nandroid {\r\n    buildFeatures {\r\n        compose = true\r\n    }\r\n\r\n    composeOptions {\r\n        kotlinCompilerExtensionVersion = \"1.4.3\"\r\n    }\r\n\r\n    kotlinOptions {\r\n        jvmTarget = \"1.8\"\r\n    }\r\n    compileSdk 33\r\n\r\n    defaultConfig {\r\n        applicationId \"endava.codebase.android.movieapp\"\r\n        minSdk 23\r\n        targetSdk 33\r\n        versionCode 1\r\n        versionName \"1.0\"\r\n        testInstrumentationRunner \"androidx.test.runner.AndroidJUnitRunner\"\r\n        vectorDrawables {\r\n            useSupportLibrary true\r\n        }\r\n    }\r\n\r\n    buildTypes {\r\n        release {\r\n            minifyEnabled false\r\n            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'\r\n        }\r\n    }\r\n    compileOptions {\r\n        sourceCompatibility JavaVersion.VERSION_11\r\n        targetCompatibility JavaVersion.VERSION_11\r\n    }\r\n\r\n    packagingOptions {\r\n        resources {\r\n            excludes += '/META-INF/{AL2.0,LGPL2.1}'\r\n        }\r\n    }\r\n}\r\n\r\ndependencies {\r\n    implementation \"androidx.core:core-ktx:1.9.0\"\r\n    implementation 'androidx.appcompat:appcompat:1.6.1'\r\n    implementation 'androidx.lifecycle:lifecycle-runtime-ktx:2.6.1'\r\n    implementation 'com.google.android.material:material:1.8.0'\r\n    implementation platform('androidx.compose:compose-bom:2023.01.00')\r\n    implementation \"androidx.compose.ui:ui\"\r\n    implementation(\"androidx.compose.material:material:1.4.0\")\r\n    implementation \"androidx.compose.ui:ui-tooling-preview\"\r\n    implementation \"androidx.activity:activity-compose:1.7.0\"\r\n    implementation \"io.coil-kt:coil-compose:2.2.2\"\r\n    debugImplementation \"androidx.compose.ui:ui-test-manifest:\"\r\n    debugImplementation \"androidx.compose.ui:ui-tooling:\"\r\n    testImplementation 'junit:junit:4.13.2'\r\n    androidTestImplementation 'androidx.test.ext:junit:1.1.5'\r\n    androidTestImplementation 'androidx.test.espresso:espresso-core:3.5.1'\r\n    androidTestImplementation \"androidx.compose.ui:ui-test-junit4:1.4.0\"\r\n}\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/app/build.gradle b/app/build.gradle
+--- a/app/build.gradle	(revision 0e964deff6111b4fe94a7e132e5b914eafadbd42)
++++ b/app/build.gradle	(date 1682586098851)
+@@ -68,4 +68,6 @@
+     androidTestImplementation 'androidx.test.ext:junit:1.1.5'
+     androidTestImplementation 'androidx.test.espresso:espresso-core:3.5.1'
+     androidTestImplementation "androidx.compose.ui:ui-test-junit4:1.4.0"
++    implementation "io.insert-koin:koin-android:$koin_version"
++    implementation "io.insert-koin:koin-androidx-compose:$koin_compose_version"
+ }

@@ -4,6 +4,8 @@
     <string name="favorites">Favorites</string>
     <string name="popular">Popular</string>
     <string name="popular_tv">On TV</string>
+    <string name="score_bar">User Score</string>
+    <string name="top_billed_cast">Top Billed Cast</string>
     <string name="rent">For Rent</string>
     <string name="theatres">In Theatres</string>
     <string name="playing_tv">TV</string>
